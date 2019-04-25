@@ -12,6 +12,9 @@
         org.xerial/sqlite-jdbc {:mvn/version "3.23.1"}
         seancorfield/next.jdbc {:mvn/version "1.0.0-alpha11"}}
  :aliases
- {:test {}
-  :runner {}
-  :demo {:main-opts ["-m" "usermanager.main"]}}}
+ {:test {:extra-paths ["test"]}
+  :runner {:extra-deps
+           {com.cognitect/test-runner
+            {:git/url "https://github.com/cognitect-labs/test-runner"
+             :sha "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
+           :main-opts ["-m" "cognitect.test-runner"]}}}
