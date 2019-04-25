@@ -1,7 +1,8 @@
 ;; copyright (c) 2019 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager
-  (:require [next.jdbc :as jdbc]
+  (:require [com.stuartsierra.component :as component]
+            [next.jdbc :as jdbc]
             [next.jdbc.sql :as sql]))
 
 ;; our database connection and initial data
@@ -21,19 +22,19 @@
 
 ;; database initialization
 
-(defn setup-database
+(defn- populate
   "Called at application startup. Attempts to create the
   database table and populate it. Takes no action if the
   database table already exists."
-  []
+  [db]
   (try
-    (jdbc/execute-one! my-db
+    (jdbc/execute-one! (db)
                        ["
 create table department (
   id            integer primary key autoincrement,
   name          varchar(32)
 )"])
-    (jdbc/execute-one! my-db
+    (jdbc/execute-one! (db)
                        ["
 create table addressbook (
   id            integer primary key autoincrement,
@@ -47,9 +48,9 @@ create table addressbook (
     ;; so populate it...
     (try
       (doseq [d departments]
-        (sql/insert! my-db :department {:name d}))
+        (sql/insert! (db) :department {:name d}))
       (doseq [row initial-user-data]
-        (sql/insert! my-db :addressbook row))
+        (sql/insert! (db) :addressbook row))
       (println "Populated database with initial data!")
       (catch Exception e
         (println "Exception:" (ex-message e))
@@ -58,26 +59,50 @@ create table addressbook (
       (println "Exception:" (ex-message e))
       (println "Looks like the database is already setup?"))))
 
+;; database component
+
+(defrecord Database [datasource]
+
+  component/Lifecycle
+  (start [this]
+    (if datasource
+      this ; already initialized
+      (let [database (assoc this :datasource (jdbc/get-datasource my-db))]
+        ;; set up database if necessary
+        (populate database)
+        database)))
+  (stop [this]
+    (assoc this :datasource nil))
+
+  ;; allow the Database component to be "called" with no arguments
+  ;; to produce the underlying datasource object
+  clojure.lang.IFn
+  (invoke [this] datasource))
+
+(defn setup-database [] (map->Database {}))
+
+;; data model access functions
+
 (defn get-department-by-id
   "Given a department ID, return the department record.
   Uses in-memory lookup for non-changing data."
-  [id]
-  (sql/get-by-id my-db :department id))
+  [db id]
+  (sql/get-by-id (db) :department id))
 
 (defn get-departments
   "Return all available department records (in order)."
-  []
-  (sql/query my-db ["select * from department order by name"]))
+  [db]
+  (sql/query (db) ["select * from department order by name"]))
 
 (defn get-user-by-id
   "Given a user ID, return the user record."
-  [id]
-  (sql/get-by-id my-db :addressbook id))
+  [db id]
+  (sql/get-by-id (db) :addressbook id))
 
 (defn get-users
   "Return all available users, sorted by name."
-  []
-  (sql/query my-db
+  [db]
+  (sql/query (db)
              ["
 select a.*, d.name
  from addressbook a
@@ -88,18 +113,18 @@ select a.*, d.name
 (defn save-user
   "Save a user record. If ID is present and not zero, then
   this is an update operation, otherwise it's an insert."
-  [user]
+  [db user]
   (let [id (:addressbook/id user)]
     (if (and id (not (zero? id)))
       ;; update
-      (sql/update! my-db :addressbook
+      (sql/update! (db) :addressbook
                    (dissoc user :addressbook/id)
                    {:id id})
       ;; insert
-      (sql/insert! my-db :addressbook
+      (sql/insert! (db) :addressbook
                    (dissoc user :addressbook/id)))))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."
-  [id]
-  (sql/delete! my-db :addressbook {:id id}))
+  [db id]
+  (sql/delete! (db) :addressbook {:id id}))

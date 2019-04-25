@@ -35,19 +35,22 @@
 
 (defn delete-by-id [req]
   (swap! changes inc)
-  (model/delete-user-by-id (get-in req [:params :id]))
+  (model/delete-user-by-id (-> req :application/component :database)
+                           (get-in req [:params :id]))
   (resp/redirect "/user/list"))
 
 (defn edit [req]
-  (let [user (model/get-user-by-id (get-in req [:params :id]))]
+  (let [db   (-> req :application/component :database)
+        user (model/get-user-by-id db
+                                   (get-in req [:params :id]))]
     (-> req
         (update :params assoc
                 :user user
-                :departments (model/get-departments))
+                :departments (model/get-departments db))
         (assoc :application/view "form"))))
 
 (defn get-users [req]
-  (let [users (model/get-users)]
+  (let [users (model/get-users (-> req :application/component :database))]
     (-> req
         (assoc-in [:params :users] users)
         (assoc :application/view "list"))))
@@ -64,6 +67,6 @@
       ;; qualify their names for domain model:
       (->> (reduce-kv (fn [m k v] (assoc! m (keyword "addressbook" (name k)) v))
                       (transient {}))
-           (persistent!))
-      (model/save-user))
+           (persistent!)
+           (model/save-user (-> req :application/component :database))))
   (resp/redirect "/user/list"))

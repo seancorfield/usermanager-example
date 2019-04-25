@@ -36,7 +36,6 @@ _There aren't any tests yet but I will create some soon!_
 
 ## Stuff I Need To Do
 
-* The database should have it's own component, to at least create a `Datasource`.
 * There should be some real-world tests.
 * I might add a `datafy`/`nav` example.
 

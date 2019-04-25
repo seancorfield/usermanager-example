@@ -14,22 +14,25 @@
 ;; Although the application config is not used in this simple
 ;; case, it probably would be in the general case -- and the
 ;; application state here is trivial but could be more complex.
-(defrecord Application [config ; configuration (unused)
-                        state] ; behavior
+(defrecord Application [config   ; configuration (unused)
+                        database ; dependency
+                        state]   ; behavior
   component/Lifecycle
   (start [this]
-    ;; set up database if necessary
-    (model/setup-database)
     (assoc this :state "Running"))
   (stop  [this]
     (assoc this :state "Stopped")))
 
 (defn my-application
   "Return your application component, fully configured.
+
   In this simple case, we just pass the whole configuration into
-  the application (:repl?)"
+  the application (:repl?).
+
+  The application depends on the database."
   [config]
-  (map->Application {:config config}))
+  (component/using (map->Application {:config config})
+                   [:database]))
 
 (defn my-middleware
   "This middleware runs for every request and can execute before/after logic.
@@ -152,6 +155,7 @@
   ([port server] (new-system port server true))
   ([port server repl?]
    (component/system-map :application (my-application {:repl? repl?})
+                         :database    (model/setup-database)
                          :web-server  (web-server #'my-handler port server))))
 
 (defn -main
