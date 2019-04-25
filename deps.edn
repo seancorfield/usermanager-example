@@ -1,0 +1,17 @@
+{:paths ["resources" "src"]
+ :deps {org.clojure/clojure {:mvn/version "1.10.0"}
+
+        com.stuartsierra/component {:mvn/version "0.4.0"}
+
+        compojure {:mvn/version "1.6.1"}
+        ring {:mvn/version "1.7.1"}
+        ring/ring-defaults {:mvn/version "0.3.2"}
+
+        selmer {:mvn/version "1.12.12"}
+
+        org.xerial/sqlite-jdbc {:mvn/version "3.23.1"}
+        seancorfield/next.jdbc {:mvn/version "1.0.0-alpha11"}}
+ :aliases
+ {:test {}
+  :runner {}
+  :demo {:main-opts ["-m" "usermanager.main"]}}}
