@@ -1,6 +1,7 @@
 ;; copyright (c) 2019 Sean Corfield, all rights reserved
 
 (ns usermanager.controllers.user
+  "The main controller for the user management portion of this app."
   (:require [ring.util.response :as resp]
             [selmer.parser :as tmpl]
             [usermanager.model.user-manager :as model]))
@@ -9,20 +10,14 @@
   "Count the number of changes (since the last reload)."
   (atom 0))
 
-(defn before [req]
-  ;; whatever needs doing at the start of the request
-  req)
-
-(defn after [req]
-  (if (resp/response? req)
-    req
-    ;; no response so far, render an HTML template
-    (let [data (assoc (:params req) :changes @changes)
-          view (:application/view req "default")
-          html (tmpl/render-file (str "views/user/" view ".html") data)]
-      (-> (resp/response (tmpl/render-file (str "layouts/default.html")
-                                           (assoc data :body [:safe html])))
-          (resp/content-type "text/html")))))
+(defn render-page
+  [req]
+  (let [data (assoc (:params req) :changes @changes)
+        view (:application/view req "default")
+        html (tmpl/render-file (str "views/user/" view ".html") data)]
+    (-> (resp/response (tmpl/render-file (str "layouts/default.html")
+                                         (assoc data :body [:safe html])))
+        (resp/content-type "text/html"))))
 
 (defn reset-changes [req]
   (reset! changes 0)

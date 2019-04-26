@@ -2,8 +2,8 @@
 
 (ns usermanager.main
   (:require [com.stuartsierra.component :as component]
-            [compojure.coercions :refer :all] ; for as-int
-            [compojure.core :refer :all] ; for GET POST and let-routes
+            [compojure.coercions :refer [as-int]]
+            [compojure.core :refer [GET POST let-routes]]
             [compojure.route :as route]
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
@@ -29,22 +29,24 @@
   In this simple case, we just pass the whole configuration into
   the application (:repl?).
 
-  The application depends on the database."
+  The application depends on the database (which is created in
+  new-system below and automatically passed into Application by
+  Component itself, before calling start)."
   [config]
   (component/using (map->Application {:config config})
                    [:database]))
 
 (defn my-middleware
   "This middleware runs for every request and can execute before/after logic.
-  Note that if 'before' returns an HTTP response, we do not execute the handler
-  but after calling the handler, we always call 'after' -- it's up to that
-  function to decide what to do if the handler returns an HTTP response."
+
+  If the handler returns an HTTP response (like a redirect), we're done.
+  Else we use the result of the handler to render an HTML page."
   [handler]
   (fn [req]
-    (let [resp (user-ctl/before req)]
+    (let [resp (handler req)]
       (if (resp/response? resp)
-          resp
-          (user-ctl/after (handler req))))))
+        resp
+        (user-ctl/render-page resp)))))
 
 ;; Helper for building the middleware:
 (defn- add-app-component
@@ -104,12 +106,8 @@
     (if http-server
       this
       (let [start-server (case server
-                           :jetty    (do
-                                       (require '[ring.adapter.jetty :as jetty])
-                                       (resolve 'jetty/run-jetty))
-                           :http-kit (do
-                                       (require '[org.httpkit.server :as kit])
-                                       (resolve 'kit/run-server))
+                           :jetty    (requiring-resolve 'ring.adapter.jetty/run-jetty)
+                           :http-kit (requiring-resolve 'org.httpkit.server/run-server)
                            (throw (ex-info "Unsupported web server"
                                            {:server server})))]
         (assoc this
