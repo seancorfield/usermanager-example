@@ -73,12 +73,19 @@
                                          ;; support load balancers
                                          (assoc-in [:proxy] true))))))
 
-
 ;; This is the main web handler, that builds routing middleware
 ;; from the application component (defined above). The handler is passed
 ;; into the web server component (below).
 (defn my-handler
-  "Given the application component, return middleware for routing."
+  "Given the application component, return middleware for routing.
+
+  We use let-routes here rather than the more usual defroutes because
+  Compojure assumes that if there's a match on the route, the entire
+  request will be handled by the function specified for that route.
+
+  Since we need to deal with page rendering after the handler runs,
+  and we need to pass in the application component at start up, we
+  need to define out route handlers so that they can be parameterized."
   [application]
   (let-routes [wrap (middleware-stack application #'my-middleware)]
     (GET  "/"                        []              (wrap #'user-ctl/default))

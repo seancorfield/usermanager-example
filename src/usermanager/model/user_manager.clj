@@ -100,7 +100,12 @@ create table addressbook (
   (sql/get-by-id (db) :addressbook id))
 
 (defn get-users
-  "Return all available users, sorted by name."
+  "Return all available users, sorted by name.
+
+  Since this is a join, the keys in the hash maps returned will
+  be namespace-qualified by the table from which they are drawn:
+
+  addressbook/id, addressbook/first_name, etc, department/name"
   [db]
   (sql/query (db)
              ["
