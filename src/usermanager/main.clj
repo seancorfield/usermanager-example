@@ -1,6 +1,33 @@
 ;; copyright (c) 2019 Sean Corfield, all rights reserved
 
 (ns usermanager.main
+  "This is an example web application, using just a few basic Clojure
+  libraries: Ring, Compojure, Component, Selmer, and next.jdbc.
+
+  I recommend this as a good way to get started building web applications
+  in Clojure so that you understand the basic moving parts in any web app.
+
+  Ring is pretty much the fundamental building block of all web apps
+  in Clojure. It provides an abstraction that maps HTTP requests to
+  simple Clojure hash maps. Your handler processes those hash maps
+  and produces another hash map containing :status and :body that
+  Ring turns into an HTTP response.
+
+  Compojure is the most widely used routing library. It lets you
+  define mappings from URL patterns -- routes -- to handler functions.
+
+  Selmer is a templating library that lets you write your web pages
+  as HTML templates that follow the Django style of simple variable
+  substitution, conditionals, and loops. Another popular approach
+  for building web pages is Hiccup, which takes Clojure data structures
+  and transforms them to HTML. If you need designers to deal with your
+  HTML templates, Selmer is going to be a lot easier for them to work with.
+
+  next.jdbc is the next generation JDBC library for Clojure, replacing
+  clojure.java.jdbc. It provides a fast, idiomatic wrapper around the
+  complexity that is Java's JDBC class hierarchy.
+
+  This example uses a local SQLite database to store data."
   (:require [com.stuartsierra.component :as component]
             [compojure.coercions :refer [as-int]]
             [compojure.core :refer [GET POST let-routes]]
@@ -19,6 +46,8 @@
                         state]   ; behavior
   component/Lifecycle
   (start [this]
+    ;; Component ensures that dependencies are fully initialized and
+    ;; started before invoking this component.
     (assoc this :state "Running"))
   (stop  [this]
     (assoc this :state "Stopped")))
@@ -27,7 +56,7 @@
   "Return your application component, fully configured.
 
   In this simple case, we just pass the whole configuration into
-  the application (:repl?).
+  the application (a hash map containing a :repl flag).
 
   The application depends on the database (which is created in
   new-system below and automatically passed into Application by
@@ -85,7 +114,7 @@
 
   Since we need to deal with page rendering after the handler runs,
   and we need to pass in the application component at start up, we
-  need to define out route handlers so that they can be parameterized."
+  need to define our route handlers so that they can be parameterized."
   [application]
   (let-routes [wrap (middleware-stack application #'my-middleware)]
     (GET  "/"                        []              (wrap #'user-ctl/default))
@@ -110,9 +139,16 @@
                       http-server shutdown]  ; state
   component/Lifecycle
   (start [this]
+    ;; it's important for your components to be idempotent: if you start
+    ;; them more than once, only the first call to start should do anything
+    ;; and subsequent calls should be an no-op -- the same applies to the
+    ;; stop calls: only stop the system if it is running, else do nothing
     (if http-server
       this
       (let [start-server (case server
+                           ;; Clojure 1.10 adding requiring-resolve to
+                           ;; require and then resolve a symbol in a
+                           ;; thread safe manner:
                            :jetty    (requiring-resolve 'ring.adapter.jetty/run-jetty)
                            :http-kit (requiring-resolve 'org.httpkit.server/run-server)
                            (throw (ex-info "Unsupported web server"
@@ -137,6 +173,7 @@
 
 (defn web-server
   "Return a WebServer component that depends on the application.
+
   The handler-fn is a function that accepts the application (Component) and
   returns a fully configured Ring handler (with middeware)."
   ([handler-fn port] (web-server handler-fn port :jetty))
@@ -146,7 +183,8 @@
                     [:application])))
 
 ;; This is the piece that combines the generic web server component above with
-;; your application-specific component defined at the top of the file:
+;; your application-specific component defined at the top of the file, and
+;; any dependencies your application has (in this case, the database):
 (defn new-system
   "Build a default system to run. In the REPL:
 
@@ -158,8 +196,8 @@
   (alter-var-root #'system component/stop)"
   ([port] (new-system port :jetty true))
   ([port server] (new-system port server true))
-  ([port server repl?]
-   (component/system-map :application (my-application {:repl? repl?})
+  ([port server repl]
+   (component/system-map :application (my-application {:repl repl})
                          :database    (model/setup-database)
                          :web-server  (web-server #'my-handler port server))))
 

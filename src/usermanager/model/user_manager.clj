@@ -1,6 +1,9 @@
 ;; copyright (c) 2019 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager
+  "The model for the application. This is where the persistence happens,
+  although in a larger application, this would probably contain just the
+  business logic and the persistence would be in a separate namespace."
   (:require [com.stuartsierra.component :as component]
             [next.jdbc :as jdbc]
             [next.jdbc.sql :as sql]))
@@ -84,8 +87,7 @@ create table addressbook (
 ;; data model access functions
 
 (defn get-department-by-id
-  "Given a department ID, return the department record.
-  Uses in-memory lookup for non-changing data."
+  "Given a department ID, return the department record."
   [db id]
   (sql/get-by-id (db) :department id))
 

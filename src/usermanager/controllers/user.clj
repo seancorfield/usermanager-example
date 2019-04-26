@@ -59,6 +59,7 @@
         (assoc :application/view "form"))))
 
 (defn get-users
+  "Render the list view with all the users in the addressbook."
   [req]
   (let [users (model/get-users (-> req :application/component :database))]
     (-> req
