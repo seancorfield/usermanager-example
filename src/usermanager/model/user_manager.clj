@@ -29,50 +29,56 @@
   "Called at application startup. Attempts to create the
   database table and populate it. Takes no action if the
   database table already exists."
-  [db]
-  (try
-    (jdbc/execute-one! (db)
-                       ["
+  [db db-type]
+  (let [auto-key (if (= "sqlite" db-type)
+                   "primary key autoincrement"
+                   (str "generated always as identity"
+                        " (start with 1, increment by 1)"
+                        " primary key"))]
+    (try
+      (jdbc/execute-one! (db)
+                         [(str "
 create table department (
-  id            integer primary key autoincrement,
+  id            integer " auto-key ",
   name          varchar(32)
-)"])
-    (jdbc/execute-one! (db)
-                       ["
+)")])
+      (jdbc/execute-one! (db)
+                         [(str "
 create table addressbook (
-  id            integer primary key autoincrement,
+  id            integer " auto-key ",
   first_name    varchar(32),
   last_name     varchar(32),
   email         varchar(64),
   department_id integer not null
-)"])
-    (println "Created database and addressbook table!")
-    ;; if table creation was successful, it didn't exist before
-    ;; so populate it...
-    (try
-      (doseq [d departments]
-        (sql/insert! (db) :department {:name d}))
-      (doseq [row initial-user-data]
-        (sql/insert! (db) :addressbook row))
-      (println "Populated database with initial data!")
+)")])
+      (println "Created database and addressbook table!")
+      ;; if table creation was successful, it didn't exist before
+      ;; so populate it...
+      (try
+        (doseq [d departments]
+          (sql/insert! (db) :department {:name d}))
+        (doseq [row initial-user-data]
+          (sql/insert! (db) :addressbook row))
+        (println "Populated database with initial data!")
+        (catch Exception e
+          (println "Exception:" (ex-message e))
+          (println "Unable to populate the initial data -- proceed with caution!")))
       (catch Exception e
         (println "Exception:" (ex-message e))
-        (println "Unable to populate the initial data -- proceed with caution!")))
-    (catch Exception e
-      (println "Exception:" (ex-message e))
-      (println "Looks like the database is already setup?"))))
+        (println "Looks like the database is already setup?")))))
 
 ;; database component
 
-(defrecord Database [datasource]
+(defrecord Database [db-spec     ; configuration
+                     datasource] ; state
 
   component/Lifecycle
   (start [this]
     (if datasource
       this ; already initialized
-      (let [database (assoc this :datasource (jdbc/get-datasource my-db))]
+      (let [database (assoc this :datasource (jdbc/get-datasource db-spec))]
         ;; set up database if necessary
-        (populate database)
+        (populate database (:dbtype db-spec))
         database)))
   (stop [this]
     (assoc this :datasource nil))
@@ -82,7 +88,7 @@ create table addressbook (
   clojure.lang.IFn
   (invoke [this] datasource))
 
-(defn setup-database [] (map->Database {}))
+(defn setup-database [] (map->Database {:db-spec my-db}))
 
 ;; data model access functions
 
