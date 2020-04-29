@@ -105,6 +105,9 @@
 ;; This is the main web handler, that builds routing middleware
 ;; from the application component (defined above). The handler is passed
 ;; into the web server component (below).
+;; Note that Vars are used -- the #' notation -- instead of bare symbols
+;; to make REPL-driven development easier. See the following for details:
+;; https://clojure.org/guides/repl/enhancing_your_repl_workflow#writing-repl-friendly-programs
 (defn my-handler
   "Given the application component, return middleware for routing.
 
@@ -185,6 +188,9 @@
 ;; This is the piece that combines the generic web server component above with
 ;; your application-specific component defined at the top of the file, and
 ;; any dependencies your application has (in this case, the database):
+;; Note that a Var is used -- the #' notation -- instead of a bare symbol
+;; to make REPL-driven development easier. See the following for details:
+;; https://clojure.org/guides/repl/enhancing_your_repl_workflow#writing-repl-friendly-programs
 (defn new-system
   "Build a default system to run. In the REPL:
 
