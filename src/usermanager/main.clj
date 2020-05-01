@@ -170,8 +170,8 @@
           :http-kit (http-server)
           (throw (ex-info "Unsupported web server"
                           {:server server})))
-        (assoc this :http-server nil)
-        (deliver shutdown true))
+        (deliver shutdown true)
+        (assoc this :http-server nil))
       this)))
 
 (defn web-server
