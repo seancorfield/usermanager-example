@@ -199,13 +199,24 @@
   (def system (new-system 8888 :http-kit))
   (alter-var-root #'system component/start)
 
-  (alter-var-root #'system component/stop)"
+  (alter-var-root #'system component/stop)
+
+  See the Rich Comment Form below."
   ([port] (new-system port :jetty true))
   ([port server] (new-system port server true))
   ([port server repl]
    (component/system-map :application (my-application {:repl repl})
                          :database    (model/setup-database)
                          :web-server  (web-server #'my-handler port server))))
+
+(comment
+  (def system (new-system 8888))
+  ;; or
+  (def system (new-system 8888 :http-kit))
+  (alter-var-root #'system component/start)
+  (alter-var-root #'system component/stop)
+  ;; view the application in REBL:
+  (java.net.URL. "http://localhost:8888"))
 
 (defn -main
   [& [port server]]
