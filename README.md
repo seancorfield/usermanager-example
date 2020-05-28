@@ -12,8 +12,10 @@ Clojure 1.10 (or later) is required. The "model" of this example app uses namesp
 
 ## Usage
 
-Clone the repo, `cd` into it, and run it with:
+Clone the repo, `cd` into it, then follow below to _Run the Application_ or _Run the application in REPL_
+or _Run the tests_.
 
+### Run the Application
 ```
 clj -m usermanager.main
 ```
@@ -26,7 +28,24 @@ If that port is in use, start it on a different port. For example, port 8100:
 clj -m usermanager.main 8100
 ```
 
-Run the tests with:
+### Run the Application in REPL
+
+Start REPL
+
+```
+$ clj
+```
+
+Once REPL starts, start the server as an example on port 8888:
+
+```clj
+user=> (require 'usermanager.main)                             ; load the code
+user=> (in-ns 'usermanager.main)                               ; move to the namesapce
+usermanager.main=> (def system (new-system 8888))              ; specify port
+usermanager.main=> (alter-var-root #'system component/start)   ; start the server
+```
+
+### Run the tests with:
 
 ```
 clj -A:test:runner
