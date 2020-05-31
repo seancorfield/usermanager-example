@@ -19,19 +19,25 @@
   (require '[next.jdbc.result-set :as rs])
   (def con (.getConnection (jdbc/get-datasource db-spec)))
   (.close con)
+  (.getMetaData (.getCatalogs (.getMetaData con)))
+  ;; this is not possible:
+  (.getMetaData (jdbc/execute! con ["select * from addressbook"]))
+
+  (def column-meta
+    {:columnLabel (fn [^java.sql.ResultSetMetaData o ^Integer i] (.getColumnLabel o i))})
 
   (extend-protocol p/Datafiable
     java.sql.Connection
     (datafy [this]
       (with-meta (merge {} (bean this))
-        {`p/nav (fn db-conn [coll k v]
+        {`p/nav (fn [coll k v]
                   (if (= :metaData k)
                     (.getMetaData this)
                     v))}))
     java.sql.DatabaseMetaData
     (datafy [this]
-      (with-meta (merge {::metadata "test"} (bean this))
-        {`p/nav (fn db-meta1 [coll k v]
+      (with-meta (merge {} (bean this))
+        {`p/nav (fn [coll k v]
                   (condp = k
                     :catalogs
                     (rs/datafiable-result-set (.getCatalogs this)
@@ -53,7 +59,11 @@
                     (rs/datafiable-result-set (.getTypeInfo this)
                                               (.getConnection this)
                                               {})
-                    v))})))
+                    v))}))
+    java.sql.ResultSetMetaData
+    (datafy [this]
+      {:columnCount (.getColumnCount this)
+       :columns (mapv (fn [i] (reduce-kv (fn [m k f] (assoc m k (f this i))) {} column-meta)) (range 1 (inc (.getColumnCount this))))}))
   nil)
 
 (defn- with-test-db
