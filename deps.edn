@@ -15,7 +15,7 @@
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps
-         {com.h2database/h2 {:mvn/version "1.4.197"}}}
+         {com.h2database/h2 {:mvn/version "1.4.199"}}}
   :runner {:extra-deps
            {com.cognitect/test-runner
             {:git/url "https://github.com/cognitect-labs/test-runner"
