@@ -13,6 +13,32 @@
                         :dbname "usermanager_test"
                         :database_to_upper false})
 
+(comment
+  (require '[clojure.datafy :as d])
+  (require '[clojure.core.protocols :as p])
+  (require '[next.jdbc.result-set :as rs])
+  (def con (.getConnection (jdbc/get-datasource db-spec)))
+  (.close con)
+
+  (extend-protocol p/Datafiable
+    java.sql.Connection
+    (datafy [this]
+      (with-meta (merge {} (bean this))
+        {`d/nav (fn db-conn [coll k v]
+                  (if (= :metaData k)
+                    (.getMetaData this)
+                    v))}))
+    java.sql.DatabaseMetaData
+    (datafy [this]
+      (with-meta (merge {::metadata "test"} (bean this))
+        {`d/nav (fn db-meta1 [coll k v] [k v]
+                  #_(if (= :catalogs k)
+                      (rs/datafiable-result-set (.getCatalogs this)
+                                                (.getConnection this)
+                                                {})
+                      v))})))
+  nil)
+
 (defn- with-test-db
   "A test fixture that sets up an in-memory H2 database for running tests."
   [t]
