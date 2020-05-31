@@ -24,19 +24,36 @@
     java.sql.Connection
     (datafy [this]
       (with-meta (merge {} (bean this))
-        {`d/nav (fn db-conn [coll k v]
+        {`p/nav (fn db-conn [coll k v]
                   (if (= :metaData k)
                     (.getMetaData this)
                     v))}))
     java.sql.DatabaseMetaData
     (datafy [this]
       (with-meta (merge {::metadata "test"} (bean this))
-        {`d/nav (fn db-meta1 [coll k v] [k v]
-                  #_(if (= :catalogs k)
-                      (rs/datafiable-result-set (.getCatalogs this)
-                                                (.getConnection this)
-                                                {})
-                      v))})))
+        {`p/nav (fn db-meta1 [coll k v]
+                  (condp = k
+                    :catalogs
+                    (rs/datafiable-result-set (.getCatalogs this)
+                                              (.getConnection this)
+                                              {})
+                    :clientInfoProperties
+                    (rs/datafiable-result-set (.getClientInfoProperties this)
+                                              (.getConnection this)
+                                              {})
+                    :schemas
+                    (rs/datafiable-result-set (.getSchemas this)
+                                              (.getConnection this)
+                                              {})
+                    :tableTypes
+                    (rs/datafiable-result-set (.getTableTypes this)
+                                              (.getConnection this)
+                                              {})
+                    :typeInfo
+                    (rs/datafiable-result-set (.getTypeInfo this)
+                                              (.getConnection this)
+                                              {})
+                    v))})))
   nil)
 
 (defn- with-test-db
