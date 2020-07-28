@@ -1,4 +1,4 @@
-;; copyright (c) 2019 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2020 Sean Corfield, all rights reserved
 
 (ns usermanager.main
   "This is an example web application, using just a few basic Clojure
@@ -148,28 +148,32 @@
     ;; stop calls: only stop the system if it is running, else do nothing
     (if http-server
       this
-      (let [start-server (case server
-                           ;; Clojure 1.10 adding requiring-resolve to
-                           ;; require and then resolve a symbol in a
-                           ;; thread safe manner:
-                           :jetty    (requiring-resolve 'ring.adapter.jetty/run-jetty)
-                           :http-kit (requiring-resolve 'org.httpkit.server/run-server)
-                           (throw (ex-info "Unsupported web server"
-                                           {:server server})))]
+      (let [[start-server opts]
+            (case server
+              ;; Clojure 1.10 adding requiring-resolve to
+              ;; require and then resolve a symbol in a
+              ;; thread safe manner:
+              :jetty    [(requiring-resolve 'ring.adapter.jetty/run-jetty)
+                         {:join? false}]
+              :http-kit [(requiring-resolve 'org.httpkit.server/run-server)
+                         {:legacy-return-value? false}]
+              (throw (ex-info "Unsupported web server"
+                              {:server server})))]
         (assoc this
                :http-server (start-server (handler-fn application)
-                                          (cond-> {:port port}
-                                            (= :jetty server)
-                                            (assoc :join? false)))
+                                          (merge {:port port} opts))
                :shutdown (promise)))))
   (stop  [this]
     (if http-server
-      (do
-        (case server
-          :jetty    (.stop http-server)
-          :http-kit (http-server)
-          (throw (ex-info "Unsupported web server"
-                          {:server server})))
+      (let [stop-server
+            (case server
+              :jetty    (fn [server] (.stop server))
+              :http-kit (fn [server]
+                          (let [stop (requiring-resolve 'org.httpkit.server/server-stop!)]
+                            (stop server {})))
+              (throw (ex-info "Unsupported web server"
+                              {:server server})))]
+        (stop-server http-server)
         (deliver shutdown true)
         (assoc this :http-server nil))
       this)))

@@ -4,7 +4,7 @@
         com.stuartsierra/component {:mvn/version "0.4.0"}
 
         compojure {:mvn/version "1.6.1"}
-        http-kit {:mvn/version "2.4.0-alpha6"}
+        http-kit {:mvn/version "2.4.0-RC1"}
         ring {:mvn/version "1.7.1"}
         ring/ring-defaults {:mvn/version "0.3.2"}
 
