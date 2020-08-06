@@ -3,15 +3,15 @@
 
         com.stuartsierra/component {:mvn/version "0.4.0"}
 
-        compojure {:mvn/version "1.6.1"}
-        http-kit {:mvn/version "2.4.0-RC1"}
-        ring {:mvn/version "1.7.1"}
+        compojure/compojure {:mvn/version "1.6.1"}
+        http-kit/http-kit {:mvn/version "2.4.0-RC1"}
+        ring/ring {:mvn/version "1.7.1"}
         ring/ring-defaults {:mvn/version "0.3.2"}
 
-        selmer {:mvn/version "1.12.25"}
+        selmer/selmer {:mvn/version "1.12.28"}
 
         org.xerial/sqlite-jdbc {:mvn/version "3.23.1"}
-        seancorfield/next.jdbc {:mvn/version "1.0.445"}}
+        seancorfield/next.jdbc {:mvn/version "1.1.582"}}
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps
