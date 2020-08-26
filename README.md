@@ -4,6 +4,8 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
+A variant using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), inspired by this example repo, can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
+
 ## Requirements
 
 This example assumes that you have the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed, and provides a `deps.edn` file.
