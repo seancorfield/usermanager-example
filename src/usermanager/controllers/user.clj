@@ -1,4 +1,4 @@
-;; copyright (c) 2019 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
 (ns usermanager.controllers.user
   "The main controller for the user management portion of this app."

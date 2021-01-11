@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2020 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
 (ns usermanager.main
   "This is an example web application, using just a few basic Clojure
@@ -32,6 +32,11 @@
             [compojure.coercions :refer [as-int]]
             [compojure.core :refer [GET POST let-routes]]
             [compojure.route :as route]
+            ;; we use Jetty by default but if you want to use
+            ;; http-kit instead, uncomment this line...
+            ;; [org.httpkit.server :refer [run-server]]
+            ;; ...and comment out this Jetty line:
+            [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
             [usermanager.controllers.user :as user-ctl]
@@ -135,59 +140,57 @@
     (route/not-found "Not Found")))
 
 ;; Standard web server component -- knows how to stop and start your chosen
-;; web server... supports both jetty and http-kit as it stands:
+;; web server... uses Jetty but explains how to use http-kit instead:
 ;; lifecycle for the specified web server in which we run
 (defrecord WebServer [handler-fn server port ; parameters
                       application            ; dependencies
                       http-server shutdown]  ; state
   component/Lifecycle
   (start [this]
-    ;; it's important for your components to be idempotent: if you start
-    ;; them more than once, only the first call to start should do anything
-    ;; and subsequent calls should be an no-op -- the same applies to the
-    ;; stop calls: only stop the system if it is running, else do nothing
-    (if http-server
-      this
-      (let [[start-server opts]
-            (case server
-              ;; Clojure 1.10 adding requiring-resolve to
-              ;; require and then resolve a symbol in a
-              ;; thread safe manner:
-              :jetty    [(requiring-resolve 'ring.adapter.jetty/run-jetty)
-                         {:join? false}]
-              :http-kit [(requiring-resolve 'org.httpkit.server/run-server)
-                         {:legacy-return-value? false}]
-              (throw (ex-info "Unsupported web server"
-                              {:server server})))]
-        (assoc this
-               :http-server (start-server (handler-fn application)
-                                          (merge {:port port} opts))
-               :shutdown (promise)))))
+         ;; it's important for your components to be idempotent: if you start
+         ;; them more than once, only the first call to start should do anything
+         ;; and subsequent calls should be an no-op -- the same applies to the
+         ;; stop calls: only stop the system if it is running, else do nothing
+         (if http-server
+           this
+           (assoc this
+                  ;; start a Jetty web server -- use :join? false
+                  ;; so that it does not block (we use a promise
+                  ;; to block on in -main).
+                  ;; to start an http-kit web server instead:
+                  ;; 1. call run-server instead of run-jetty
+                  ;; 2. omit :join? false since http-kit does
+                  ;; not block when it starts
+                  :http-server (run-jetty (handler-fn application)
+                                          {:port port :join? false})
+                  ;; this promise exists primarily so -main can
+                  ;; wait on something, since we start the web
+                  ;; server in a non-blocking way:
+                  :shutdown (promise))))
   (stop  [this]
-    (if http-server
-      (let [stop-server
-            (case server
-              :jetty    (fn [server] (.stop server))
-              :http-kit (fn [server]
-                          (let [stop (requiring-resolve 'org.httpkit.server/server-stop!)]
-                            (stop server {})))
-              (throw (ex-info "Unsupported web server"
-                              {:server server})))]
-        (stop-server http-server)
-        (deliver shutdown true)
-        (assoc this :http-server nil))
-      this)))
+         (if http-server
+           (do
+             ;; shutdown Jetty: call .stop on the server object:
+             (.stop http-server)
+             ;; shutdown http-kit: invoke the server (as a function):
+             ;; (http-server)
+             ;; deliver the promise to indicate shutdown (this is
+             ;; really just good housekeeping, since you're only
+             ;; going to call stop via the REPL when you are not
+             ;; waiting on the promise):
+             (deliver shutdown true)
+             (assoc this :http-server nil))
+           this)))
 
 (defn web-server
   "Return a WebServer component that depends on the application.
 
   The handler-fn is a function that accepts the application (Component) and
   returns a fully configured Ring handler (with middeware)."
-  ([handler-fn port] (web-server handler-fn port :jetty))
-  ([handler-fn port server]
-   (component/using (map->WebServer {:handler-fn handler-fn
-                                     :port port :server server})
-                    [:application])))
+  [handler-fn port]
+  (component/using (map->WebServer {:handler-fn handler-fn
+                                    :port port})
+                   [:application]))
 
 ;; This is the piece that combines the generic web server component above with
 ;; your application-specific component defined at the top of the file, and
@@ -199,35 +202,58 @@
   "Build a default system to run. In the REPL:
 
   (def system (new-system 8888))
-  ;; or
-  (def system (new-system 8888 :http-kit))
+
   (alter-var-root #'system component/start)
 
   (alter-var-root #'system component/stop)
 
   See the Rich Comment Form below."
-  ([port] (new-system port :jetty true))
-  ([port server] (new-system port server true))
-  ([port server repl]
+  ([port] (new-system port true))
+  ([port repl]
    (component/system-map :application (my-application {:repl repl})
                          :database    (model/setup-database)
-                         :web-server  (web-server #'my-handler port server))))
+                         :web-server  (web-server #'my-handler port))))
 
 (comment
   (def system (new-system 8888))
-  ;; or
-  (def system (new-system 8888 :http-kit))
   (alter-var-root #'system component/start)
   (alter-var-root #'system component/stop)
-  ;; view the application in REBL:
-  (java.net.URL. "http://localhost:8888"))
+  ;; the comma here just "anchors" the closing paren on this line,
+  ;; which makes it easier to put you cursor at the end of the lines
+  ;; above when you want to evaluate them into the REPL:
+  ,)
+
+(defonce ^:private
+  ^{:doc "This exists so that if you run a socket REPL when
+  you start the application, you can get at the running
+  system easily.
+
+  Assuming a socket REPL running on 50505:
+
+  nc localhost 50505
+  user=> (require 'usermanager.main)
+  nil
+  user=> (in-ns 'usermanager.main)
+  ...
+  usermanager.main=> (require '[next.jdbc :as jdbc])
+  nil
+  usermanager.main=> (def db (-> repl-system deref :application :database))
+  #'usermanager.main/db
+  usermanager.main=> (jdbc/execute! (db) [\"select * from addressbook\"])
+  [#:addressbook{:id 1, :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
+  usermanager.main=>"}
+  repl-system
+  (atom nil))
 
 (defn -main
-  [& [port server]]
+  [& [port]]
   (let [port (or port (get (System/getenv) "PORT" 8080))
-        port (cond-> port (string? port) Integer/parseInt)
-        server (or server (get (System/getenv) "SERVER" "jetty"))]
-    (println "Starting up on port" port "with server" server)
-    (-> (component/start (new-system port (keyword server) false))
-        ;; wait for the web server to shutdown
+        port (cond-> port (string? port) Integer/parseInt)]
+    (println "Starting up on port" port)
+    ;; start the web server and application:
+    (-> (component/start (new-system port false))
+        ;; then put it into the atom so we can get at it from a REPL
+        ;; connected to this application:
+        (->> (reset! repl-system))
+        ;; then wait "forever" on the promise created:
         :web-server :shutdown deref)))

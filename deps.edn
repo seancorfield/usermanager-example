@@ -1,23 +1,24 @@
 {:paths ["resources" "src"]
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
 
-        com.stuartsierra/component {:mvn/version "0.4.0"}
+        com.stuartsierra/component {:mvn/version "1.0.0"}
 
-        compojure/compojure {:mvn/version "1.6.1"}
-        http-kit/http-kit {:mvn/version "2.4.0-RC1"}
-        ring/ring {:mvn/version "1.7.1"}
+        compojure/compojure {:mvn/version "1.6.2"}
+        ;; if you want to use http-kit instead of Jetty:
+        ;; http-kit/http-kit {:mvn/version "2.5.0"}
+        ring/ring {:mvn/version "1.8.2"}
         ring/ring-defaults {:mvn/version "0.3.2"}
 
-        selmer/selmer {:mvn/version "1.12.28"}
+        selmer/selmer {:mvn/version "1.12.31"}
 
-        org.xerial/sqlite-jdbc {:mvn/version "3.23.1"}
-        seancorfield/next.jdbc {:mvn/version "1.1.582"}}
+        org.xerial/sqlite-jdbc {:mvn/version "3.34.0"}
+        seancorfield/next.jdbc {:mvn/version "1.1.613"}}
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps
-         {com.h2database/h2 {:mvn/version "1.4.199"}}}
+         {com.h2database/h2 {:mvn/version "1.4.200"}}}
   :runner {:extra-deps
            {com.cognitect/test-runner
             {:git/url "https://github.com/cognitect-labs/test-runner"
-             :sha "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
+             :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
            :main-opts ["-m" "cognitect.test-runner"]}}}

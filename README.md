@@ -8,7 +8,7 @@ A variant using [Integrant](https://github.com/weavejester/integrant) and [Reiti
 
 ## Requirements
 
-This example assumes that you have the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed, and provides a `deps.edn` file.
+This example assumes that you have a recent version of the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed (at least 1.10.1.727), and provides a `deps.edn` file.
 
 Clojure 1.10 (or later) is required. The "model" of this example app uses namespace-qualified keys in hash maps. It uses [next.jdbc](https://cljdoc.org/d/seancorfield/next.jdbc) -- the "next generation" JDBC library for Clojure -- which produces namespace-qualified hash maps from result sets.
 
@@ -19,7 +19,7 @@ or _Run the tests_.
 
 ### Run the Application
 ```
-clj -m usermanager.main
+clj -M -m usermanager.main
 ```
 
 It should create a SQLite database (`usermanager_db`) and populate two tables (`department` and `addressbook`) and start a Jetty instance on port 8080.
@@ -27,7 +27,7 @@ It should create a SQLite database (`usermanager_db`) and populate two tables (`
 If that port is in use, start it on a different port. For example, port 8100:
 
 ```
-clj -m usermanager.main 8100
+clj -M -m usermanager.main 8100
 ```
 
 ### Run the Application in REPL
@@ -50,7 +50,7 @@ usermanager.main=> (alter-var-root #'system component/start)   ; start the serve
 ### Run the tests with:
 
 ```
-clj -A:test:runner
+clj -M:test:runner
 ```
 
 _There aren't any tests yet but I will create some soon!_
@@ -62,6 +62,6 @@ _There aren't any tests yet but I will create some soon!_
 
 # License & Copyright
 
-Copyright (c) 2015-2019 Sean Corfield.
+Copyright (c) 2015-2021 Sean Corfield.
 
 Distributed under the Apache Source License 2.0.
