@@ -2,6 +2,17 @@
 
 This is a simple web application using [Component](https://github.com/stuartsierra/component), [Ring](https://github.com/ring-clojure/ring), [Compojure](https://github.com/weavejester/compojure), and [Selmer](https://github.com/yogthos/Selmer) connected to a local SQLite database.
 
+On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
+
+* The entire application has been moved to `bases/web` without any renaming,
+* `workspace.edn` has been added,
+* A development `deps.edn` file has been added at the root,
+* The application can be built in `projects/usermanager`,
+* The application can be run in `:dev` mode,
+* The tests can all be run via the `poly` tool.
+
+The next step is to break the application apart into components and rename namespaces to follow their new structure.
+
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
 A variant using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), inspired by this example repo, can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
@@ -19,7 +30,7 @@ or _Run the tests_.
 
 ### Run the Application
 ```
-clj -M -m usermanager.main
+clojure -M:dev -m usermanager.main
 ```
 
 It should create a SQLite database (`usermanager_db`) and populate two tables (`department` and `addressbook`) and start a Jetty instance on port 8080.
@@ -27,7 +38,7 @@ It should create a SQLite database (`usermanager_db`) and populate two tables (`
 If that port is in use, start it on a different port. For example, port 8100:
 
 ```
-clj -M -m usermanager.main 8100
+clojure -M:dev -m usermanager.main 8100
 ```
 
 ### Run the Application in REPL
@@ -35,7 +46,7 @@ clj -M -m usermanager.main 8100
 Start REPL
 
 ```
-$ clj
+$ clj -M:dev
 ```
 
 Once REPL starts, start the server as an example on port 8888:
@@ -47,13 +58,15 @@ usermanager.main=> (def system (new-system 8888))              ; specify port
 usermanager.main=> (alter-var-root #'system component/start)   ; start the server
 ```
 
-### Run the tests with:
+### Run the tests
+
+You can run all the tests via Polylith's `poly` tool:
 
 ```
-clj -M:test:runner
+clojure -M:poly test :all :dev
 ```
 
-_There aren't any tests yet but I will create some soon!_
+_Normally you would just use `clojure -M:poly test` to run tests that depend on code that has changed since your last commit._
 
 ## Stuff I Need To Do
 

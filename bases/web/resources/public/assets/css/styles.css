@@ -1,0 +1,208 @@
+/* ----- CONSISTENCY ----- */
+html {font-size: 100.01%; overflow: -moz-scrollbars-vertical;} /* force Firefox browser window scrollbar to always appear */
+html,body,address,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,p,blockquote,table,caption,th,td,img{margin:0;padding:0;}
+abbr, acronym {border-bottom: 1px dotted #000; cursor: help; font-style: normal;}
+a img, a:link img, a:visited img {border: none; border-width: 0; vertical-align: top;}
+label {cursor: pointer;} /* label elements are clickable, demonstrate visually */
+input {margin: 0;}
+hr {display: none;}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - -
+	CORE IDENTIFIERS - font sizes 60,69,76,83,89
+- - - - - - - - - - - - - - - - - - - - - - - - - - */
+body, input, select, textarea, table {font-family: "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; font-size: 100%;}
+body {font: 75%/1.5em "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; text-align: center;}
+/* html > body {font-size: 12px;} explicitly state font size in px for smarter, px resizable browsers */
+#container {margin: 0 auto 3em auto; text-align: left; width: 600px;}
+#header {}
+#navigation ul {padding: 0 2px 0 0;}
+#navigation ul li a {font-weight: bold; padding: 11px 8px 14px 8px;}
+#navigation ul.horizontal li {float: right; margin: 0; padding: 0 0 0 2px;}
+#navigation ul.horizontal li.logo {float: left;}
+#navigation ul.horizontal li.logo a {padding-left: 0;}
+#navigation ul li.logo span {padding-left: 22px;}
+#title {margin: 0 auto; padding: 1.5em 0;}
+#title h1 {font-size: 150%; margin-bottom: 15px;}
+#title h2 {font-size: 120%; font-weight: normal; line-height: 1.5em;}
+#primary {padding: 1em 0;}
+#secondary {}
+#tertiary {}
+#footer {margin: 0 auto; padding: 1.5em 0; text-align: center;}
+#footer p {margin: 0 0 0.2em 0;}
+
+/* ----- HEADINGS ----- */
+h1, h2, h3, h4, h5, h6 {margin: 15px 0;}
+h1 {font-size: 240%;}
+h2 {font-size: 180%;}
+h3 {font-size: 140%;}
+h4 {font-size: 100%;}
+h5 {font-size: 100%;}
+h6 {font-size: 100%;}
+
+/* ----- PARAGRAPHS ----- */
+p {margin: 1em 0;}
+
+/* ----- LISTS ----- */
+ol, ul {line-height: normal; margin: 1.5em 0 1.7em 2em;}
+ol li, ul li {line-height: 1.5em; margin: 0 0 0.5em 0;}
+ul ul, ul ol, ol ul, ol ol {margin-top: 0; margin-bottom: 0;}
+
+/* ----- TABLES ----- */
+table {line-height: normal; table-layout: fixed; width: 100%;}
+caption, th {caption-side: top; font-weight: bold;}
+caption span, th, td {padding: 5px; text-align: left; vertical-align: top;}
+
+/* ----- CLASS HELPERS ----- */
+.hide {display: none;}
+.icon {padding: 1px 0 1px 20px;}
+.content {padding: 0 1em;}
+.note {margin-top: 0; padding: 0 0 1em 0;}
+.info, .success, .warning {padding: 1em;}
+.accessible {height: 1px; left: -9999em; overflow: hidden; position: absolute; top: 0; width: 1px;}
+.clear:after {clear: both; content: "."; display: block; height: 0; visibility: hidden;}
+.clear {min-width: 0; display: inline-block; /* \*/display: block;}
+* html .clear {/* \*/height: 1%;}
+
+/* ----- NAVIGATION ----- */
+ul.nav, ul.nav li, ul.nav ul, ul.nav a {display: block; line-height: normal; margin: 0; padding: 0;}
+ul.nav, ul.nav li, ul.nav ul {list-style: none;}
+ul.nav ul {display: none;}
+ul.nav li {position: relative; z-index: 1;}
+ul.nav li:hover {z-index: 999;}
+ul.nav li:hover > ul {display: block; position: absolute;}
+ul.nav li a {min-width: 0; padding: 4px 8px 5px 8px;} /* 1 more bottom px provides best visual balance */
+ul.nav li a:link, ul.nav li a:visited, ul.nav li a:hover {position: relative; text-decoration: none;}
+ul.horizontal li {float: left; width: auto;}
+ul.horizontal li.alt {float: right;}
+ul.horizontal ul {left: auto; right: auto; top: auto;}
+ul.tabs {padding: 0 10px;}
+ul.tabs li {float: left; margin: 0 6px 0 0;}
+ul.tabs li.alt {float: right; margin: 0 0 0 6px;}
+ul.tabs li a.selected {top: 1px;}
+ul.tabs ul li {margin-right: 0;}
+ul.vertical, ul.vertical ul {width: 15em;}
+ul.vertical li {float: none;}
+ul.vertical ul, ul.nav ul.vertical ul {left: 60%; margin-top: -0.5em; right: auto; top: auto;}
+ul.wide {width: 100%;}
+
+/* ----- FORMS ----- */
+form {margin: 1.5em 0;}
+form div.field, form div.control {padding: 1em 0;}
+form div.field .required {cursor: help; font-style: normal; font-weight: bold;}
+form div.help {line-height: 1.5em; margin-top: 3px;}
+form.familiar div.field .label, form.familiar legend span {display: block; font-weight: bold; margin: 0 0 2px 0;}
+form.unfamiliar div.field .label {display: block; float: left; margin: 0 10px 0 0; text-align: right;}
+form.unfamiliar fieldset {position: relative;}
+form.unfamiliar legend span {display: block; float: none; left: 0; position: absolute; text-align: right; top: 0;}
+form.unfamiliar.scan div.field .label, form.unfamiliar.scan legend span {text-align: left;}
+/* mulitple selection */
+form ol.selection, form ol.selection li, form ol.selection li input {list-style: none; margin: 0; padding: 0;}
+form ol.selection li label {display: block; padding: 0 0 5px 0;}
+form ol.selection.scroll {height: 10em; overflow: auto;}
+form ol.selection.scroll li label {padding: 3px 3px 3px 23px; text-indent: -19px;}
+form ol.selection.scroll li label input {text-indent: -19px; width: 15px;}
+/* field sizes */
+input.small, select.small, textarea.small, form ol.selection.small {width: 15em;}
+input.medium, select.medium, textarea.medium, form ol.selection.medium {width: 20em;}
+input.large, select.large, textarea.large, form ol.selection.large {width: 25em;}
+textarea.short, form ol.selection.scroll.short {height: 10em;}
+textarea.tall, form ol.selection.scroll.tall {height: 20em;}
+/* label widths */
+form.unfamiliar.small .label, form.unfamiliar.small legend span {width: 12em;}
+form.unfamiliar.medium .label, form.unfamiliar.medium legend span {width: 15em;}
+form.unfamiliar.large .label, form.unfamiliar.large legend span {width: 18em;}
+form.unfamiliar.small .help, form.unfamiliar.small .selection, form.unfamiliar.small div.control {margin-left: 13em;}
+form.unfamiliar.medium .help, form.unfamiliar.medium .selection, form.unfamiliar.medium div.control {margin-left: 16em;}
+form.unfamiliar.large .help, form.unfamiliar.large .selection, form.unfamiliar.large div.control {margin-left: 19em;}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - -
+	Hacks - fixes rendering bugs (DO NOT REMOVE)
+- - - - - - - - - - - - - - - - - - - - - - - - - */
+.clear:after {clear: both; content: "."; display: block; height: 0; visibility: hidden;}
+.clear {min-width: 0; display: inline-block; /* \*/display: block;}
+* html .clear, * html form ol.selection li label {/* \*/height: 1%;}
+* html form.unfamiliar .help {padding-left: 3px;}
+* html form.unfamiliar ol.selection, * html form.unfamiliar select.selection {left: 3px; position: relative;}
+* html form div.control input {overflow: visible; padding: 0 .25em; width: auto;} /* IE6 button width fix */
+* html form div fieldset legend {margin-left: -7px;}	/* for IE6 as legend is indented */
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - -
+	Site Color Theme (background, border, color)
+- - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+/* ----- CORE IDENTIFIERS ----- */
+body {background-color: #F8F8F8; border-top: 4px solid #545454; color: #767676;}
+#navigation ul li a {border: none; color: #B9B9B9;}
+#navigation ul li a:hover {color: #445666;}
+#navigation ul li.current a {color: #445666;}
+#title h1, h3, h4 {color: #445666;}
+#title h2 {color: #767676;}
+#navigation {border-bottom: 1px solid #e9e9e9;}
+#primary {border-top: 1px solid #e9e9e9; border-bottom: 1px solid #e9e9e9;}
+
+/* ----- MISC CLASSES ----- */
+.icon {background-position: 0 50%; background-repeat: no-repeat;}
+.info, .note {border-bottom: 1px solid #e9e9e9;}
+.success {background-color: #DEFFAF; border: 1px solid #ACD919;}
+.warning {background-color: #FFF6BF; border: 1px solid #FFD324;}
+.success, .warning {border-width: 1px 0;}
+.button {background-color: #F0F0F0; border-color: #FFF #DCDCDC #DCDCDC #FFF; border-width: 1px;}
+
+/* ----- LINKS ----- */
+a, a:link, a:visited {color: #C44803;}
+a:hover, a:active {color: #444;}
+
+/* ----- HEADINGS ----- */
+h1, h2, h3, h4, h1 a:link, h2 a:link, h3 a:link, h4 a:link, 
+h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited {
+	color: #74a050;
+}
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, 
+h1 a:active, h2 a:active, h3 a:active, h4 a:active {
+	color: #445666;
+}
+
+/* ----- COLUMNAR LISTS ----- */
+ul.columnar {background-color: #F4F4F4;}
+ul.columnar li a:link, ul.columnar li a:visited {color: #444;}
+ul.columnar li a:hover {background-color: #666; color: #FEF5C6;}
+ul.columnar li div.content {background-color: #F4F4ED;}
+.column-title {background-color: #58564F; color: #FFF;}
+
+/* ----- NAVIGATION ----- */
+ul.nav li {background-color: #F3F3F3; border: solid 1px #CCC;}
+ul.nav li a:link, ul.nav li a:visited {color: #333;}
+ul.nav li a:hover {background-color: #FFC;}
+ul.nav li:hover, ul.nav li.sfhover, ul.tabs li a.selected, ul.tabs li a.selected:hover {background-color: #FFF;}
+ul.nav ul {background-color: #FFF;} /* for IE/Win, no rendering problems elsewhere, prevents see through text */
+ul.tabs li {border-width: 1px 1px 0 1px;}
+ul.tabs li li {border-width: 1px;}
+ul.horizontal {padding-left: 1px;} /* this rule and below are needed for borders */
+ul.horizontal li {margin-bottom: -1px; margin-left: -1px;}
+ul.horizontal ul.vertical li, ul.tabs ul.vertical li {margin-left: -1px;}
+ul.horizontal ul.vertical li li, ul.tabs ul.vertical li li {margin-left: 0;}
+ul.vertical li {margin-bottom: -1px;}
+
+/* ----- PAGINATION ----- */
+ul.paging {color: #444;}
+ul.paging li a:link, ul.paging li a:visited {background-color: #ECE9D8; color: #333;}
+ul.paging li a:hover, ul.paging li strong {background-color: #FFF6BF;}
+
+/* ----- TABLES ----- */
+table, caption, th, td {border-color: #8C959A; border-style: solid;}
+table {border-width: 0 0 1px 1px}
+caption {border-width: 1px 1px 0 1px;}
+caption, tbody tr.alt {background-color: #F4F4F4;}
+table.highlight tbody tr:hover, table.highlight tbody tr.hover {background-color: #DEFFAF;}
+th, th a:link, th a:visited {background-color: #8C959A; color: #FFF;}
+th a:hover {color: #CCC;}
+th, td {border-width: 0 1px 0 0;}
+
+/* ----- FORMS ----- */
+form fieldset {border: none; border-width: 0;}
+form legend {color: #333;}
+form .focused {background-color: #F4F1E5;}
+form ol.selection.scroll {background-color: #FFF; border: 1px solid #CCC;}
+form ol.selection.scroll li.alt {background-color: #F4F4F4;}

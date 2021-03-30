@@ -1,0 +1,43 @@
+<h3>User Info</h3>
+<form class="familiar medium" method="post" action="/user/save">
+
+	<input type="hidden" name="id" id="id"
+				 value="{{user.addressbook/id}}"/>
+
+	<div class="field">
+		<label for="first_name" class="label">First Name:</label>
+		<input type="text" name="first_name" id="first_name"
+					 value="{{user.addressbook/first_name}}"/>
+	</div>
+
+	<div class="field">
+		<label for="last_name" class="label">Last Name:</label>
+		<input type="text" name="last_name" id="last_name"
+					 value="{{user.addressbook/last_name}}"/>
+	</div>
+
+	<div class="field">
+		<label for="email" class="label">Email:</label>
+		<input type="text" name="email" id="email"
+					 value="{{user.addressbook/email}}"/>
+	</div>
+
+	<div class="field">
+		<label for="department_id" class="label">Department:</label>
+		<select name="department_id" id="department_id">{%
+            for d in departments
+            %}
+            <option value="{{d.department/id}}"{%
+                    ifequal user.addressbook/department_id d.department/id
+                    %} selected="selected"{%
+                    endifequal %}>{{d.department/name}}</option>{%
+            endfor
+            %}
+		</select>
+	</div>
+
+	<div class="control">
+		<input type="submit" value="Save User"/>
+	</div>
+
+</form>

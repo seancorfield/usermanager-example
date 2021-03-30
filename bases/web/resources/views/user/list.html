@@ -1,0 +1,30 @@
+<table border="0" cellspacing="0">
+	<col width="40" />
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Department</th>
+			<th>Delete</th>
+		</tr>
+	</thead>
+	<tbody>
+        {% if users|empty? %}
+            <tr><td colspan="5">No users exist but <a href="/user/form">new ones can be added</a>.</td></tr>
+        {% else %}
+            {% for user in users %}
+                <tr>
+			        <td><a href="/user/form/{{user.addressbook/id}}">{{user.addressbook/id}}</a></td>
+			        <td class="name">
+                        <a href="/user/form/{{user.addressbook/id}}">{{user.addressbook/last_name}},
+                          {{user.addressbook/first_name}}</a>
+                    </td>
+			        <td class="email">{{user.addressbook/email}}</td>
+			        <td class="department">{{user.department/name}}</td>
+			        <td class="delete"><a href="/user/delete/{{user.addressbook/id}}">DELETE</a></td>
+		        </tr>
+            {% endfor %}
+        {% endif %}
+	</tbody>
+</table>

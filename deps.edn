@@ -1,24 +1,28 @@
-{:paths ["resources" "src"]
- :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+{:aliases  {:dev {:extra-paths ["development/src"
+                                "development/resources"
+                                "bases/web/src"
+                                "bases/web/resources"]
+                  :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
 
-        com.stuartsierra/component {:mvn/version "1.0.0"}
+                               com.stuartsierra/component {:mvn/version "1.0.0"}
 
-        compojure/compojure {:mvn/version "1.6.2"}
-        ;; if you want to use http-kit instead of Jetty:
-        ;; http-kit/http-kit {:mvn/version "2.5.0"}
-        ring/ring {:mvn/version "1.8.2"}
-        ring/ring-defaults {:mvn/version "0.3.2"}
+                               compojure/compojure {:mvn/version "1.6.2"}
+                               ring/ring {:mvn/version "1.8.2"}
+                               ring/ring-defaults {:mvn/version "0.3.2"}
 
-        selmer/selmer {:mvn/version "1.12.31"}
+                               selmer/selmer {:mvn/version "1.12.31"}
 
-        org.xerial/sqlite-jdbc {:mvn/version "3.34.0"}
-        seancorfield/next.jdbc {:mvn/version "1.1.613"}}
- :aliases
- {:test {:extra-paths ["test"]
-         :extra-deps
-         {com.h2database/h2 {:mvn/version "1.4.200"}}}
-  :runner {:extra-deps
-           {com.cognitect/test-runner
-            {:git/url "https://github.com/cognitect-labs/test-runner"
-             :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
-           :main-opts ["-m" "cognitect.test-runner"]}}}
+                               org.xerial/sqlite-jdbc {:mvn/version "3.34.0"}
+                               seancorfield/next.jdbc {:mvn/version "1.1.613"}}}
+
+            :test {:extra-paths ["development/test"
+                                 "bases/web/test"
+                                 "projects/usermanager/test"]
+                   :extra-deps {com.h2database/h2 {:mvn/version "1.4.200"}
+                                org.clojure/test.check {:mvn/version "1.1.0"}}}
+
+            :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
+                   :extra-deps {polyfy/polylith
+                                {:git/url   "https://github.com/polyfy/polylith"
+                                 :sha       "2d89676724e98d4c1b858c28c452cf2a64fc1b1c"
+                                 :deps/root "projects/poly"}}}}}
