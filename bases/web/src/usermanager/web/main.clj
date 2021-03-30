@@ -56,7 +56,7 @@
 
 ;; Helper for building the middleware:
 (defn- add-app-component
-  "Middleware to add your application component into the request. Use
+  "Middleware to add your app-state component into the request. Use
   the same qualified keyword in your controller to retrieve it."
   [handler application]
   (fn [req]
@@ -66,7 +66,7 @@
 ;; application. This example uses a fairly standard stack of Ring middleware
 ;; with some tweaks for convenience
 (defn middleware-stack
-  "Given the application component and middleware, return a standard stack of
+  "Given the app-state component and middleware, return a standard stack of
   Ring middleware for a web application."
   [app-component app-middleware]
   (fn [handler]
@@ -80,20 +80,20 @@
                                          (assoc-in [:proxy] true))))))
 
 ;; This is the main web handler, that builds routing middleware
-;; from the application component (defined above). The handler is passed
-;; into the web server component (below).
+;; from the app-state component. The handler is passed into the web-server
+;; component.
 ;; Note that Vars are used -- the #' notation -- instead of bare symbols
 ;; to make REPL-driven development easier. See the following for details:
 ;; https://clojure.org/guides/repl/enhancing_your_repl_workflow#writing-repl-friendly-programs
 (defn my-handler
-  "Given the application component, return middleware for routing.
+  "Given the app-state component, return middleware for routing.
 
   We use let-routes here rather than the more usual defroutes because
   Compojure assumes that if there's a match on the route, the entire
   request will be handled by the function specified for that route.
 
   Since we need to deal with page rendering after the handler runs,
-  and we need to pass in the application component at start up, we
+  and we need to pass in the app-state component at start up, we
   need to define our route handlers so that they can be parameterized."
   [application]
   (let-routes [wrap (middleware-stack application #'my-middleware)]
@@ -111,9 +111,9 @@
     (route/resources "/")
     (route/not-found "Not Found")))
 
-;; This is the piece that combines the generic web server component above with
-;; your application-specific component defined at the top of the file, and
-;; any dependencies your application has (in this case, the database):
+;; This is the piece that combines the generic web-server component with
+;; your application-specific app-state component, and any dependencies
+;; your application has (in this case, the database):
 ;; Note that a Var is used -- the #' notation -- instead of a bare symbol
 ;; to make REPL-driven development easier. See the following for details:
 ;; https://clojure.org/guides/repl/enhancing_your_repl_workflow#writing-repl-friendly-programs
@@ -140,7 +140,7 @@
   ;; the comma here just "anchors" the closing paren on this line,
   ;; which makes it easier to put you cursor at the end of the lines
   ;; above when you want to evaluate them into the REPL:
-  ,)
+  )
 
 (defonce ^:private
   ^{:doc "This exists so that if you run a socket REPL when

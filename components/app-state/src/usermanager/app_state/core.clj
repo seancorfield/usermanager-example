@@ -17,7 +17,7 @@
     (assoc this :state "Stopped")))
 
 (defn create
-  "Return your application component, fully configured.
+  "Return your application state component, fully configured.
 
   In this simple case, we just pass the whole configuration into
   the application (a hash map containing a :repl flag).
