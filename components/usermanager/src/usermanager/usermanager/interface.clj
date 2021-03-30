@@ -6,6 +6,11 @@
   [db id]
   (model/delete-user-by-id db id))
 
+(defn get-department-by-id
+  "Given a department ID, return the department record."
+  [db id]
+  (model/get-department-by-id db id))
+
 (defn get-departments
   "Return all available department records (in order)."
   [db]
