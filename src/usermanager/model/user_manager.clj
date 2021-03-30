@@ -86,7 +86,7 @@ create table addressbook (
   ;; allow the Database component to be "called" with no arguments
   ;; to produce the underlying datasource object
   clojure.lang.IFn
-  (invoke [this] datasource))
+  (invoke [_] datasource))
 
 (defn setup-database [] (map->Database {:db-spec my-db}))
 
