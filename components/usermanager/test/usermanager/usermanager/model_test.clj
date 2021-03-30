@@ -2,7 +2,7 @@
 
 (ns usermanager.usermanager.model-test
   "These tests use H2 in-memory."
-  (:require [clojure.test :refer [deftest is use-fixtures]]
+  (:require [clojure.test :as test :refer [deftest is testing]]
             [com.stuartsierra.component :as component]
             [next.jdbc :as jdbc]
             [usermanager.usermanager.model :as model]))
@@ -28,7 +28,7 @@
     (t)
     (component/stop db)))
 
-(use-fixtures :once with-test-db)
+(test/use-fixtures :once with-test-db)
 
 (deftest department-test
   (is (= #:department{:id 1 :name "Accounting"}
