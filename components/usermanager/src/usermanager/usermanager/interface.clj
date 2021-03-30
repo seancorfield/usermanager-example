@@ -1,25 +1,25 @@
 (ns usermanager.usermanager.interface
-  (:require [usermanager.usermanager.model :as model]))
+  (:require [usermanager.usermanager.model :as usermanager]))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."
   [db id]
-  (model/delete-user-by-id db id))
+  (usermanager/delete-user-by-id db id))
 
 (defn get-department-by-id
   "Given a department ID, return the department record."
   [db id]
-  (model/get-department-by-id db id))
+  (usermanager/get-department-by-id db id))
 
 (defn get-departments
   "Return all available department records (in order)."
   [db]
-  (model/get-departments db))
+  (usermanager/get-departments db))
 
 (defn get-user-by-id
   "Given a user ID, return the user record."
   [db id]
-  (model/get-user-by-id db id))
+  (usermanager/get-user-by-id db id))
 
 (defn get-users
   "Return all available users, sorted by name.
@@ -29,16 +29,16 @@
 
   addressbook/id, addressbook/first_name, etc, department/name"
   [db]
-  (model/get-users db))
+  (usermanager/get-users db))
 
 (defn save-user
   "Save a user record. If ID is present and not zero, then
   this is an update operation, otherwise it's an insert."
   [db user]
-  (model/save-user db user))
+  (usermanager/save-user db user))
 
 (defn setup-database
   "Given an optional db-spec (hash map), return a fully
   initialized database."
   [& [db-spec]]
-  (model/setup-database db-spec))
+  (usermanager/setup-database db-spec))
