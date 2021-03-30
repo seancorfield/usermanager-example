@@ -7,6 +7,7 @@ On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.
 Step 3 in progress:
 
 * In preparation for adding a lot more `components` as I refactor the code, switch back to the more standard `interface` naming convention from `api` which worked for the somewhat monolithic component identified in Step 2. So `usermanager.usermanager.interface` is the main component entry point and `usermanager.usermanager.model` implements that `interface`.
+* Refactor out `app-state` and `web-server` components.
 
 Step 2:
 

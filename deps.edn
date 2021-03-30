@@ -2,8 +2,14 @@
                                 "development/resources"
                                 "bases/web/src"
                                 "bases/web/resources"
+                                ;; old, monolithic component:
                                 "components/usermanager/src"
-                                "components/usermanager/resources"]
+                                "components/usermanager/resources"
+                                ;; new, refactored components:
+                                "components/app-state/src"
+                                "components/app-state/resources"
+                                "components/web-server/src"
+                                "components/web-server/resources"]
                   :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
 
                                com.stuartsierra/component {:mvn/version "1.0.0"}
@@ -19,7 +25,11 @@
 
             :test {:extra-paths ["development/test"
                                  "bases/web/test"
+                                 ;; old, monolithic component:
                                  "components/usermanager/test"
+                                 ;; new, refactored components:
+                                 "components/app-state/test"
+                                 "components/web-server/test"
                                  "projects/usermanager/test"]
                    :extra-deps {com.h2database/h2 {:mvn/version "1.4.200"}
                                 org.clojure/test.check {:mvn/version "1.1.0"}}}

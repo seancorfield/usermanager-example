@@ -32,44 +32,15 @@
             [compojure.coercions :refer [as-int]]
             [compojure.core :refer [GET POST let-routes]]
             [compojure.route :as route]
-            ;; we use Jetty by default but if you want to use
-            ;; http-kit instead, uncomment this line...
-            ;; [org.httpkit.server :refer [run-server]]
-            ;; ...and comment out this Jetty line:
-            [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
             [usermanager.web.controllers.user :as user-ctl]
-            [usermanager.usermanager.interface :as interface])
+            ;; old, monolithic component:
+            [usermanager.usermanager.interface :as usermanager]
+            ;; new, refactored components:
+            [usermanager.app-state.interface :as app-state]
+            [usermanager.web-server.interface :as web-server])
   (:gen-class))
-
-;; Implement your application's lifecycle here:
-;; Although the application config is not used in this simple
-;; case, it probably would be in the general case -- and the
-;; application state here is trivial but could be more complex.
-(defrecord Application [config   ; configuration (unused)
-                        database ; dependency
-                        state]   ; behavior
-  component/Lifecycle
-  (start [this]
-    ;; Component ensures that dependencies are fully initialized and
-    ;; started before invoking this component.
-    (assoc this :state "Running"))
-  (stop  [this]
-    (assoc this :state "Stopped")))
-
-(defn my-application
-  "Return your application component, fully configured.
-
-  In this simple case, we just pass the whole configuration into
-  the application (a hash map containing a :repl flag).
-
-  The application depends on the database (which is created in
-  new-system below and automatically passed into Application by
-  Component itself, before calling start)."
-  [config]
-  (component/using (map->Application {:config config})
-                   [:database]))
 
 (defn my-middleware
   "This middleware runs for every request and can execute before/after logic.
@@ -140,59 +111,6 @@
     (route/resources "/")
     (route/not-found "Not Found")))
 
-;; Standard web server component -- knows how to stop and start your chosen
-;; web server... uses Jetty but explains how to use http-kit instead:
-;; lifecycle for the specified web server in which we run
-(defrecord WebServer [handler-fn server port ; parameters
-                      application            ; dependencies
-                      http-server shutdown]  ; state
-  component/Lifecycle
-  (start [this]
-         ;; it's important for your components to be idempotent: if you start
-         ;; them more than once, only the first call to start should do anything
-         ;; and subsequent calls should be an no-op -- the same applies to the
-         ;; stop calls: only stop the system if it is running, else do nothing
-         (if http-server
-           this
-           (assoc this
-                  ;; start a Jetty web server -- use :join? false
-                  ;; so that it does not block (we use a promise
-                  ;; to block on in -main).
-                  ;; to start an http-kit web server instead:
-                  ;; 1. call run-server instead of run-jetty
-                  ;; 2. omit :join? false since http-kit does
-                  ;; not block when it starts
-                  :http-server (run-jetty (handler-fn application)
-                                          {:port port :join? false})
-                  ;; this promise exists primarily so -main can
-                  ;; wait on something, since we start the web
-                  ;; server in a non-blocking way:
-                  :shutdown (promise))))
-  (stop  [this]
-         (if http-server
-           (do
-             ;; shutdown Jetty: call .stop on the server object:
-             (.stop http-server)
-             ;; shutdown http-kit: invoke the server (as a function):
-             ;; (http-server)
-             ;; deliver the promise to indicate shutdown (this is
-             ;; really just good housekeeping, since you're only
-             ;; going to call stop via the REPL when you are not
-             ;; waiting on the promise):
-             (deliver shutdown true)
-             (assoc this :http-server nil))
-           this)))
-
-(defn web-server
-  "Return a WebServer component that depends on the application.
-
-  The handler-fn is a function that accepts the application (Component) and
-  returns a fully configured Ring handler (with middeware)."
-  [handler-fn port]
-  (component/using (map->WebServer {:handler-fn handler-fn
-                                    :port port})
-                   [:application]))
-
 ;; This is the piece that combines the generic web server component above with
 ;; your application-specific component defined at the top of the file, and
 ;; any dependencies your application has (in this case, the database):
@@ -211,9 +129,9 @@
   See the Rich Comment Form below."
   ([port] (new-system port true))
   ([port repl]
-   (component/system-map :application (my-application {:repl repl})
-                         :database    (interface/setup-database)
-                         :web-server  (web-server #'my-handler port))))
+   (component/system-map :application (app-state/create {:repl repl})
+                         :database    (usermanager/setup-database)
+                         :web-server  (web-server/create #'my-handler port))))
 
 (comment
   (def system (new-system 8888))

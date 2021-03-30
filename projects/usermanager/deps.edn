@@ -1,7 +1,11 @@
 {:paths ["src" "resources"]
 
  :deps {poly/base-web {:local/root "../../bases/web"}
+        ;; old, monolithic component:
         poly/component-usermanager {:local/root "../../components/usermanager"}
+        ;; new, refactored components:
+        poly/component-app-state {:local/root "../../components/app-state"}
+        poly/component-web-server {:local/root "../../components/web-server"}
 
         org.clojure/clojure {:mvn/version "1.10.3"}
         ;; specify DB driver for "production" usage:
