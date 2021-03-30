@@ -40,7 +40,7 @@
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
             [usermanager.web.controllers.user :as user-ctl]
-            [usermanager.usermanager.api :as api])
+            [usermanager.usermanager.interface :as interface])
   (:gen-class))
 
 ;; Implement your application's lifecycle here:
@@ -212,7 +212,7 @@
   ([port] (new-system port true))
   ([port repl]
    (component/system-map :application (my-application {:repl repl})
-                         :database    (api/setup-database)
+                         :database    (interface/setup-database)
                          :web-server  (web-server #'my-handler port))))
 
 (comment

@@ -1,4 +1,4 @@
-(ns usermanager.usermanager.api
+(ns usermanager.usermanager.interface
   (:require [usermanager.usermanager.model :as model]))
 
 (defn delete-user-by-id

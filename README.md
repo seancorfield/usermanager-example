@@ -4,6 +4,10 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
+Step 3 in progress:
+
+* In preparation for adding a lot more `components` as I refactor the code, switch back to the more standard `interface` naming convention from `api` which worked for the somewhat monolithic component identified in Step 2. So `usermanager.usermanager.interface` is the main component entry point and `usermanager.usermanager.model` implements that `interface`.
+
 Step 2:
 
 * The application has now been split into `bases/web` and `components/usermanager`, namespaces have been updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` are the two entry points; the old `usermanager.model.user-manager` is now `usermanager.usermanager.model` to implement the `api`).
@@ -18,6 +22,8 @@ Step 1 was:
 * The tests can all be run via the `poly` tool.
 
 The next step is to break the application apart into components and rename namespaces to follow their new structure.
+
+> Note: my "Step 1" above is a combination of what the Polylith documentations refers to as steps 1 (create the empty workspace) and 2 (move the legacy app into a base) -- so "Step 2" above is Polylith's step 3, and "Step 3" onward is multiple iterations of Polylith's step 4. Nothing confusing about that, eh?
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
