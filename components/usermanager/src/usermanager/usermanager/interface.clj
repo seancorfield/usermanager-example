@@ -32,4 +32,8 @@
   [db user]
   (model/save-user db user))
 
-(defn setup-database [] (model/setup-database))
+(defn setup-database
+  "Given an optional db-spec (hash map), return a fully
+  initialized database."
+  [& [db-spec]]
+  (model/setup-database db-spec))

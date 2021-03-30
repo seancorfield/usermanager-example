@@ -67,8 +67,8 @@ create table addressbook (
         (println "Exception:" (ex-message e))
         (println "Looks like the database is already setup?")))))
 
-(defn setup-database []
-  (database/create my-db #'populate))
+(defn setup-database [db-spec]
+  (database/create (or db-spec my-db) #'populate))
 
 ;; data model access functions
 

@@ -23,7 +23,7 @@
       (jdbc/execute-one! ds ["drop table addressbook"])
       (catch Exception _)))
   (let [db (component/start
-            (model/map->Database {:db-spec db-spec}))]
+            (model/setup-database db-spec))]
     (reset! test-db db)
     (t)
     (component/stop db)))
