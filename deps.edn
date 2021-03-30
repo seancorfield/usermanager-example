@@ -1,7 +1,9 @@
 {:aliases  {:dev {:extra-paths ["development/src"
                                 "development/resources"
                                 "bases/web/src"
-                                "bases/web/resources"]
+                                "bases/web/resources"
+                                "components/usermanager/src"
+                                "components/usermanager/resources"]
                   :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
 
                                com.stuartsierra/component {:mvn/version "1.0.0"}
@@ -17,6 +19,7 @@
 
             :test {:extra-paths ["development/test"
                                  "bases/web/test"
+                                 "components/usermanager/test"
                                  "projects/usermanager/test"]
                    :extra-deps {com.h2database/h2 {:mvn/version "1.4.200"}
                                 org.clojure/test.check {:mvn/version "1.1.0"}}}

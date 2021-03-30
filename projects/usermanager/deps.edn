@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
 
  :deps {poly/base-web {:local/root "../../bases/web"}
+        poly/component-usermanager {:local/root "../../components/usermanager"}
 
         org.clojure/clojure {:mvn/version "1.10.3"}
         ;; specify DB driver for "production" usage:
@@ -13,4 +14,4 @@
                      :exec-fn hf.depstar/uberjar
                      :exec-args {:jar "usermanager.jar"
                                  :aot true
-                                 :main-class usermanager.main}}}}
+                                 :main-class usermanager.web.main}}}}

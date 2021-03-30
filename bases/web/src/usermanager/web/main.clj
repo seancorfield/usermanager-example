@@ -1,6 +1,6 @@
 ;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
-(ns usermanager.main
+(ns usermanager.web.main
   "This is an example web application, using just a few basic Clojure
   libraries: Ring, Compojure, Component, Selmer, and next.jdbc.
 
@@ -39,8 +39,8 @@
             [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
-            [usermanager.controllers.user :as user-ctl]
-            [usermanager.model.user-manager :as model])
+            [usermanager.web.controllers.user :as user-ctl]
+            [usermanager.usermanager.api :as api])
   (:gen-class))
 
 ;; Implement your application's lifecycle here:
@@ -212,7 +212,7 @@
   ([port] (new-system port true))
   ([port repl]
    (component/system-map :application (my-application {:repl repl})
-                         :database    (model/setup-database)
+                         :database    (api/setup-database)
                          :web-server  (web-server #'my-handler port))))
 
 (comment
@@ -232,17 +232,17 @@
   Assuming a socket REPL running on 50505:
 
   nc localhost 50505
-  user=> (require 'usermanager.main)
+  user=> (require 'usermanager.web.main)
   nil
-  user=> (in-ns 'usermanager.main)
+  user=> (in-ns 'usermanager.web.main)
   ...
-  usermanager.main=> (require '[next.jdbc :as jdbc])
+  usermanager.web.main=> (require '[next.jdbc :as jdbc])
   nil
-  usermanager.main=> (def db (-> repl-system deref :application :database))
-  #'usermanager.main/db
-  usermanager.main=> (jdbc/execute! (db) [\"select * from addressbook\"])
+  usermanager.web.main=> (def db (-> repl-system deref :application :database))
+  #'usermanager.web.main/db
+  usermanager.web.main=> (jdbc/execute! (db) [\"select * from addressbook\"])
   [#:addressbook{:id 1, :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
-  usermanager.main=>"}
+  usermanager.web.main=>"}
   repl-system
   (atom nil))
 

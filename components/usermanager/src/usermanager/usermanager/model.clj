@@ -1,6 +1,6 @@
 ;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
-(ns usermanager.model.user-manager
+(ns usermanager.usermanager.model
   "The model for the application. This is where the persistence happens,
   although in a larger application, this would probably contain just the
   business logic and the persistence would be in a separate namespace."

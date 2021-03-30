@@ -1,11 +1,11 @@
 ;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
-(ns usermanager.model.user-manager-test
+(ns usermanager.usermanager.model-test
   "These tests use H2 in-memory."
   (:require [clojure.test :refer [deftest is use-fixtures]]
             [com.stuartsierra.component :as component]
             [next.jdbc :as jdbc]
-            [usermanager.model.user-manager :as model]))
+            [usermanager.usermanager.model :as model]))
 
 (def ^:private test-db (atom nil))
 

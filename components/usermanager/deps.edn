@@ -1,0 +1,7 @@
+{:paths ["src" "resources"]
+
+ :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
+
+        ;; note: we do not specify the database driver here!
+        ;; :dev, :test, and the usermanager project do that
+        seancorfield/next.jdbc {:mvn/version "1.1.613"}}}

@@ -4,6 +4,12 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
+Step 2:
+
+* The application has now been split into `bases/web` and `components/usermanager`, namespaces have been updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` are the two entry points; the old `usermanager.model.user-manager` is now `usermanager.usermanager.model` to implement the `api`).
+
+Step 1 was:
+
 * The entire application has been moved to `bases/web` without any renaming,
 * `workspace.edn` has been added,
 * A development `deps.edn` file has been added at the root,

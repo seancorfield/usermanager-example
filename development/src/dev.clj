@@ -1,8 +1,8 @@
 (ns dev)
 
-(require 'usermanager.main)
+(require 'usermanager.web.main)
 
-(def system (usermanager.main/new-system 9000))
+(def system (usermanager.web.main/new-system 9000))
 
 (require '[com.stuartsierra.component :as component])
 
