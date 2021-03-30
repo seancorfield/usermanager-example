@@ -1,4 +1,5 @@
 .cpcache
+*.jar
 /.lsp
 /.rebel_readline_history
 /.socket-repl-port
