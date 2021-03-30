@@ -4,9 +4,9 @@
   "The model for the application. This is where the persistence happens,
   although in a larger application, this would probably contain just the
   business logic and the persistence would be in a separate namespace."
-  (:require [com.stuartsierra.component :as component]
-            [next.jdbc :as jdbc]
-            [next.jdbc.sql :as sql]))
+  (:require [next.jdbc :as jdbc]
+            [next.jdbc.sql :as sql]
+            [usermanager.database.interface :as database]))
 
 ;; our database connection and initial data
 
@@ -67,28 +67,8 @@ create table addressbook (
         (println "Exception:" (ex-message e))
         (println "Looks like the database is already setup?")))))
 
-;; database component
-
-(defrecord Database [db-spec     ; configuration
-                     datasource] ; state
-
-  component/Lifecycle
-  (start [this]
-    (if datasource
-      this ; already initialized
-      (let [database (assoc this :datasource (jdbc/get-datasource db-spec))]
-        ;; set up database if necessary
-        (populate database (:dbtype db-spec))
-        database)))
-  (stop [this]
-    (assoc this :datasource nil))
-
-  ;; allow the Database component to be "called" with no arguments
-  ;; to produce the underlying datasource object
-  clojure.lang.IFn
-  (invoke [_] datasource))
-
-(defn setup-database [] (map->Database {:db-spec my-db}))
+(defn setup-database []
+  (database/create my-db #'populate))
 
 ;; data model access functions
 

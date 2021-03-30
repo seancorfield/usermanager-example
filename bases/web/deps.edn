@@ -6,8 +6,4 @@
         ring/ring {:mvn/version "1.8.2"}
         ring/ring-defaults {:mvn/version "0.3.2"}
 
-        selmer/selmer {:mvn/version "1.12.31"}
-
-        ;; note: we do not specify the database driver here!
-        ;; :dev, :test, and the usermanager project do that
-        seancorfield/next.jdbc {:mvn/version "1.1.613"}}}
+        selmer/selmer {:mvn/version "1.12.31"}}}

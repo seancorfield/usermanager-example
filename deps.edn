@@ -8,6 +8,8 @@
                                 ;; new, refactored components:
                                 "components/app-state/src"
                                 "components/app-state/resources"
+                                "components/database/src"
+                                "components/database/resources"
                                 "components/web-server/src"
                                 "components/web-server/resources"]
                   :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
@@ -29,6 +31,7 @@
                                  "components/usermanager/test"
                                  ;; new, refactored components:
                                  "components/app-state/test"
+                                 "components/database/test"
                                  "components/web-server/test"
                                  "projects/usermanager/test"]
                    :extra-deps {com.h2database/h2 {:mvn/version "1.4.200"}
