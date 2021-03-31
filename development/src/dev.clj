@@ -8,6 +8,6 @@
 
 (alter-var-root #'system component/start)
 
-;; test http://localhost:9000
+;; test: http://localhost:9000
 
 (alter-var-root #'system component/stop)

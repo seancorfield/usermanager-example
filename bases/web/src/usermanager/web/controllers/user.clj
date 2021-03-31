@@ -33,7 +33,7 @@
   [req]
   (assoc-in req [:params :message]
                 (str "Welcome to the User Manager application demo! "
-                     "This uses just Compojure, Ring, and Selmer.")))
+                     "This uses just Polylith, Compojure, Ring, and Selmer.")))
 
 (defn delete-by-id
   "Compojure has already coerced the :id parameter to an int."

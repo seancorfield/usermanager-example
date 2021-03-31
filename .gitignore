@@ -1,5 +1,6 @@
 .cpcache
 *.jar
+*.DS_Store
 /.lsp
 /.rebel_readline_history
 /.socket-repl-port

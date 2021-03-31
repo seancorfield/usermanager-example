@@ -1,26 +1,25 @@
-(ns usermanager.database.schema
+(ns usermanager.schema.core
   (:require [next.jdbc :as jdbc]
-            [next.jdbc.sql :as sql]
-            [usermanager.database.core :as core]))
+            [next.jdbc.sql :as sql]))
 
 ;; our database connection and initial data
 
-(def ^:private my-db
+(def my-db
   "SQLite database connection spec."
   {:dbtype "sqlite" :dbname "usermanager_db"})
 
-(def ^:private departments
+(def departments
   "List of departments."
   ["Accounting" "Sales" "Support" "Development"])
 
-(def ^:private initial-user-data
+(def initial-user-data
   "Seed the database with this data."
   [{:first_name "Sean" :last_name "Corfield"
     :email "sean@worldsingles.com" :department_id 4}])
 
 ;; database initialization
 
-(defn- populate
+(defn populate
   "Called at application startup. Attempts to create the
   database table and populate it. Takes no action if the
   database table already exists."
@@ -46,7 +45,7 @@ create table addressbook (
   email         varchar(64),
   department_id integer not null
 )")])
-      (println "Created database and addressbook table!")
+      (println "Created department and addressbook table!")
       ;; if table creation was successful, it didn't exist before
       ;; so populate it...
       (try
@@ -63,4 +62,4 @@ create table addressbook (
         (println "Looks like the database is already setup?")))))
 
 (defn create-schema [db-spec]
-  (core/create (or db-spec my-db) #'populate))
+  {:db-spec (or db-spec my-db) :init-fn #'populate})

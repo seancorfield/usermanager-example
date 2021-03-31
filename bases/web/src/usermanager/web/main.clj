@@ -37,7 +37,8 @@
             [usermanager.web.controllers.user :as user-ctl]
             [usermanager.web-server.interface :as web-server]
             [usermanager.app-state.interface :as app-state]
-            [usermanager.database.interface :as database])
+            [usermanager.database.interface :as database]
+            [usermanager.schema.interface :as schema])
   (:gen-class))
 
 (defn my-middleware
@@ -128,7 +129,7 @@
   ([port] (new-system port true))
   ([port repl]
    (component/system-map :application (app-state/create {:repl repl})
-                         :database    (database/create-schema)
+                         :database    (database/create (schema/create))
                          :web-server  (web-server/create #'my-handler port))))
 
 (comment

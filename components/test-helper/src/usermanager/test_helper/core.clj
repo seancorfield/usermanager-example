@@ -18,7 +18,7 @@
       (jdbc/execute-one! ds ["drop table addressbook"])
       (catch Exception _)))
   (let [db (component/start
-             (database/create-schema db-spec))]
+             (database/create db-spec))]
     (reset! test-db db)
     (t)
     (component/stop db)))
