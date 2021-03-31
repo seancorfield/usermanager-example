@@ -35,11 +35,9 @@
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
             [usermanager.web.controllers.user :as user-ctl]
-            ;; old, monolithic component:
-            [usermanager.usermanager.interface :as usermanager]
-            ;; new, refactored components:
+            [usermanager.web-server.interface :as web-server]
             [usermanager.app-state.interface :as app-state]
-            [usermanager.web-server.interface :as web-server])
+            [usermanager.database.interface :as database])
   (:gen-class))
 
 (defn my-middleware
@@ -130,17 +128,17 @@
   ([port] (new-system port true))
   ([port repl]
    (component/system-map :application (app-state/create {:repl repl})
-                         :database    (usermanager/setup-database)
+                         :database    (database/create-schema)
                          :web-server  (web-server/create #'my-handler port))))
 
 (comment
   (def system (new-system 8888))
   (alter-var-root #'system component/start)
-  (alter-var-root #'system component/stop)
+  (alter-var-root #'system component/stop))
   ;; the comma here just "anchors" the closing paren on this line,
   ;; which makes it easier to put you cursor at the end of the lines
   ;; above when you want to evaluate them into the REPL:
-  )
+
 
 (defonce ^:private
   ^{:doc "This exists so that if you run a socket REPL when

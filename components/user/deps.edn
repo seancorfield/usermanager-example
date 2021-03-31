@@ -1,0 +1,5 @@
+{:paths ["src" "resources"]
+
+ ;; note: we do not specify the database driver here!
+ ;; :dev, :test, and the usermanager project do that
+ :deps {}}

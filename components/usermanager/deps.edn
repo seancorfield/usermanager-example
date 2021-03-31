@@ -1,5 +1,0 @@
-{:paths ["src" "resources"]
-
- :deps {;; note: we do not specify the database driver here!
-        ;; :dev, :test, and the usermanager project do that
-        seancorfield/next.jdbc {:mvn/version "1.1.613"}}}

@@ -1,8 +1,7 @@
 {:paths ["src" "resources"]
 
  :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
-        seancorfield/next.jdbc {:mvn/version "1.1.613"}
-        org.xerial/sqlite-jdbc {:mvn/version "3.34.0"}}
+        seancorfield/next.jdbc {:mvn/version "1.1.613"}}
 
  :aliases {:test {:extra-paths ["test"]
                   :extra-deps {}}}}

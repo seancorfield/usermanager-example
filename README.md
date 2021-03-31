@@ -4,10 +4,13 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
+<img src="images/workspace.png" width="80%" alt="Workspace">
+
 Step 3 in progress:
 
 * In preparation for adding more `components` as I refactor the code, switch back to the more standard `interface` naming convention from `api` which worked for the somewhat monolithic component identified in Step 2. So `usermanager.usermanager.interface` is the main component entry point and `usermanager.usermanager.model` implements that `interface`.
 * Refactor out `app-state`, `database`, and `web-server` components.
+* Refactor out `department` and `test-helper` components + renamed from `usermanager` to `user`.
 
 Step 2:
 
