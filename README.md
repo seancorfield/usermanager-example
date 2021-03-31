@@ -4,7 +4,7 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
-<img src="images/workspace.png" width="80%" alt="Workspace">
+<img src="images/workspace.png" alt="Workspace">
 
 Step 3 in progress:
 
