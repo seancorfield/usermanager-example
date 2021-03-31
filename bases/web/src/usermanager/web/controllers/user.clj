@@ -39,8 +39,8 @@
   "Compojure has already coerced the :id parameter to an int."
   [req]
   (swap! changes inc)
-  (user/delete-user-by-id (-> req :application/component :database)
-                          (get-in req [:params :id]))
+  (user/delete-by-id (-> req :application/component :database)
+                     (get-in req [:params :id]))
   (resp/redirect "/user/list"))
 
 (defn edit
@@ -52,7 +52,7 @@
   [req]
   (let [db   (-> req :application/component :database)
         user (when-let [id (get-in req [:params :id])]
-               (user/get-user-by-id db id))]
+               (user/get-by-id db id))]
     (-> req
         (update :params assoc
                 :user user
@@ -84,5 +84,5 @@
       (->> (reduce-kv (fn [m k v] (assoc! m (keyword "addressbook" (name k)) v))
                       (transient {}))
            (persistent!)
-           (user/save-user (-> req :application/component :database))))
+           (user/save (-> req :application/component :database))))
   (resp/redirect "/user/list"))

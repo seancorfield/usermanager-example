@@ -11,15 +11,15 @@
 
 (deftest department-test
   (is (= #:department{:id 1 :name "Accounting"}
-         (department/get-department-by-id @test-db 1)))
+         (department/get-by-id @test-db 1)))
   (is (= 4 (count (department/get-departments @test-db)))))
 
 (deftest user-test
-  (is (= 1 (:addressbook/id (user/get-user-by-id @test-db 1))))
+  (is (= 1 (:addressbook/id (user/get-by-id @test-db 1))))
   (is (= "Sean" (:addressbook/first_name
-                 (user/get-user-by-id @test-db 1))))
+                 (user/get-by-id @test-db 1))))
   (is (= 4 (:addressbook/department_id
-            (user/get-user-by-id @test-db 1))))
+            (user/get-by-id @test-db 1))))
   (is (= 1 (count (user/get-users @test-db))))
   (is (= "Development" (:department/name
                         (first
@@ -29,14 +29,14 @@
   (is (= "sean@corfield.org"
          (:addressbook/email
           (do
-            (user/save-user @test-db {:addressbook/id           1
-                                      :addressbook/email "sean@corfield.org"})
-            (user/get-user-by-id @test-db 1)))))
+            (user/save @test-db {:addressbook/id         1
+                                 :addressbook/email "sean@corfield.org"})
+            (user/get-by-id @test-db 1)))))
   (is (= "seancorfield@hotmail.com"
          (:addressbook/email
           (do
-            (user/save-user @test-db {:addressbook/first_name           "Sean"
-                                      :addressbook/last_name     "Corfield"
-                                      :addressbook/department_id 4
-                                      :addressbook/email         "seancorfield@hotmail.com"})
-            (user/get-user-by-id @test-db 2))))))
+            (user/save @test-db {:addressbook/first_name         "Sean"
+                                 :addressbook/last_name     "Corfield"
+                                 :addressbook/department_id 4
+                                 :addressbook/email         "seancorfield@hotmail.com"})
+            (user/get-by-id @test-db 2))))))
