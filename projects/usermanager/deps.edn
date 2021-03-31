@@ -5,6 +5,7 @@
         poly/app-state  {:local/root "../../components/app-state"}
         poly/database   {:local/root "../../components/database"}
         poly/department {:local/root "../../components/department"}
+        poly/schema     {:local/root "../../components/schema"}
         poly/web-server {:local/root "../../components/web-server"}
 
         org.clojure/clojure {:mvn/version "1.10.3"}
