@@ -1,17 +1,17 @@
 (ns usermanager.user.interface
   (:require [usermanager.user.core :as user]))
 
-(defn delete-user-by-id
+(defn delete-by-id
   "Given a user ID, delete that user."
   [db id]
-  (user/delete-user-by-id db id))
+  (user/delete-by-id db id))
 
-(defn get-user-by-id
+(defn get-by-id
   "Given a user ID, return the user record."
   [db id]
-  (user/get-user-by-id db id))
+  (user/get-by-id db id))
 
-(defn get-users
+(defn get-all
   "Return all available users, sorted by name.
 
   Since this is a join, the keys in the hash maps returned will
@@ -19,10 +19,10 @@
 
   addressbook/id, addressbook/first_name, etc, department/name"
   [db]
-  (user/get-users db))
+  (user/get-all db))
 
-(defn save-user
+(defn save
   "Save a user record. If ID is present and not zero, then
   this is an update operation, otherwise it's an insert."
   [db user]
-  (user/save-user db user))
+  (user/save db user))

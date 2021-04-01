@@ -1,12 +1,12 @@
 (ns usermanager.department.interface
   (:require [usermanager.department.core :as department]))
 
-(defn get-department-by-id
+(defn get-by-id
   "Given a department ID, return the department record."
   [db id]
-  (department/get-department-by-id db id))
+  (department/get-by-id db id))
 
-(defn get-departments
+(defn get-all
   "Return all available department records (in order)."
   [db]
-  (department/get-departments db))
+  (department/get-all db))

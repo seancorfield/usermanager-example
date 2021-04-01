@@ -3,12 +3,12 @@
 (ns usermanager.user.core
   (:require [next.jdbc.sql :as sql]))
 
-(defn get-user-by-id
+(defn get-by-id
   "Given a user ID, return the user record."
   [db id]
   (sql/get-by-id (db) :addressbook id))
 
-(defn get-users
+(defn get-all
   "Return all available users, sorted by name.
 
   Since this is a join, the keys in the hash maps returned will
@@ -24,7 +24,7 @@ select a.*, d.name
  order by a.last_name, a.first_name
 "]))
 
-(defn save-user
+(defn save
   "Save a user record. If ID is present and not zero, then
   this is an update operation, otherwise it's an insert."
   [db user]
@@ -38,7 +38,7 @@ select a.*, d.name
       (sql/insert! (db) :addressbook
                    (dissoc user :addressbook/id)))))
 
-(defn delete-user-by-id
+(defn delete-by-id
   "Given a user ID, delete that user."
   [db id]
   (sql/delete! (db) :addressbook {:id id}))

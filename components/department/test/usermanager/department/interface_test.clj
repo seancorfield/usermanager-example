@@ -9,5 +9,5 @@
 
 (deftest department-test
   (is (= #:department{:id 1 :name "Accounting"}
-         (sut/get-department-by-id (fixture/test-db) 1)))
-  (is (= 4 (count (sut/get-departments (fixture/test-db))))))
+         (sut/get-by-id (fixture/test-db) 1)))
+  (is (= 4 (count (sut/get-all (fixture/test-db))))))
