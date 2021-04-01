@@ -10,6 +10,8 @@
                                 "components/department/resources"
                                 "components/schema/src"
                                 "components/schema/resources"
+                                "components/schema-fixture/src"
+                                "components/schema-fixture/resources"
                                 "components/user/src"
                                 "components/user/resources"
                                 "components/web-server/src"
@@ -33,9 +35,6 @@
                                  "components/database/test"
                                  "components/department/test"
                                  "components/schema/test"
-                                 ;; schema-fixture is test-only:
-                                 "components/schema-fixture/src"
-                                 "components/schema-fixture/resources"
                                  "components/schema-fixture/test"
                                  "components/user/test"
                                  "components/web-server/test"
