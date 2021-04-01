@@ -8,5 +8,4 @@
 
         selmer/selmer {:mvn/version "1.12.31"}}
 
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {}}}}
+ :aliases {:test {:extra-paths ["test"]}}}

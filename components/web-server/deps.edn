@@ -2,5 +2,4 @@
  :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
 
         ring/ring {:mvn/version "1.8.2"}}
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {}}}}
+ :aliases {:test {:extra-paths ["test"]}}}
