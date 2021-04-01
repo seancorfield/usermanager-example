@@ -4,6 +4,8 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
+![Workspace](/images/workspace.png "Workspace")
+
 Step 1 was:
 
 * The entire application was moved to `bases/web` without any renaming,
