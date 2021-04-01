@@ -35,3 +35,14 @@
   database but also gracefully handle an existing database."
   [db-spec init-fn]
   (map->Database {:db-spec db-spec :init-fn init-fn}))
+
+(defn auto-increment-key
+  "Given a database type (e.g., sqlite), return a string
+  that can be used to declare a column as an auto-increment
+  primary key in a CREATE TABLE statement."
+  [db-type]
+  (if (= "sqlite" db-type)
+    "primary key autoincrement"
+    (str "generated always as identity"
+         " (start with 1 increment by 1)"
+         " primary key")))

@@ -25,11 +25,7 @@
   database table and populate it. Takes no action if the
   database table already exists."
   [db db-type]
-  (let [auto-key (if (= "sqlite" db-type)
-                   "primary key autoincrement"
-                   (str "generated always as identity"
-                        " (start with 1 increment by 1)"
-                        " primary key"))]
+  (let [auto-key (database/auto-increment-key db-type)]
     (try
       (jdbc/execute-one! (db)
                          [(str "
