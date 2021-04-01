@@ -2,11 +2,24 @@
 
 This is a simple web application using [Component](https://github.com/stuartsierra/component), [Ring](https://github.com/ring-clojure/ring), [Compojure](https://github.com/weavejester/compojure), and [Selmer](https://github.com/yogthos/Selmer) connected to a local SQLite database.
 
-On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
+On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
+
+Step 1 was:
+
+* The entire application was moved to `bases/web` without any renaming,
+* `workspace.edn` was added,
+* A development `deps.edn` file was added at the root,
+* The application can be built in `projects/usermanager`,
+* The application can be run in `:dev` mode,
+* The tests can all be run via the `poly` tool.
+
+Step 2:
+
+* The application was split into `bases/web` and `components/usermanager`, namespaces were updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` were the two entry points; the old `usermanager.model.user-manager` became `usermanager.usermanager.model` to implement the `api`).
 
 Step 3 (several commits):
 
-* In preparation for adding more `components` as I refactor the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
+* In preparation for adding more `components` as I refactored the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
 * Then I refactored the monolithic `usermanager` component into `app-state`, `database`, `department`, `schema`, `schema-fixture` (test-only), `user`, and `web-server` components.
 * `schema` has a subinterface for each table, so that new tables can be added and they are created and populated on the first run of the application without affecting previously created tables.
 * You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
@@ -14,24 +27,11 @@ Step 3 (several commits):
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
 * While `clojure -M:poly test :dev` works, `clojure -M:poly test :project` does not -- _awaiting a bug fix in the `poly` test runner._
 
-Step 2:
-
-* The application has now been split into `bases/web` and `components/usermanager`, namespaces have been updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` are the two entry points; the old `usermanager.model.user-manager` is now `usermanager.usermanager.model` to implement the `api`).
-
-Step 1 was:
-
-* The entire application has been moved to `bases/web` without any renaming,
-* `workspace.edn` has been added,
-* A development `deps.edn` file has been added at the root,
-* The application can be built in `projects/usermanager`,
-* The application can be run in `:dev` mode,
-* The tests can all be run via the `poly` tool.
-
-> Note: my "Step 1" above is a combination of what the Polylith documentations refers to as steps 1 (create the empty workspace) and 2 (move the legacy app into a base) -- so "Step 2" above is Polylith's step 3, and "Step 3" onward is multiple iterations of Polylith's step 4. Nothing confusing about that, eh?
+> Note: my "Step 1" above is a combination of what the Polylith documentations refers to as steps 1 (create the empty workspace) and 2 (move the legacy app into a base) -- so "Step 2" above is Polylith's step 3, and "Step 3" is multiple iterations of Polylith's step 4. Nothing confusing about that, eh?
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
-A variant using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), inspired by this example repo, can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
+A variant of the non-Polylith version of this example application, using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
 
 ## Requirements
 
@@ -46,7 +46,7 @@ or _Run the tests_.
 
 ### Run the Application
 ```
-clojure -M:dev -m usermanager.main
+clojure -M:dev -m usermanager.web.main
 ```
 
 It should create a SQLite database (`usermanager_db`) and populate two tables (`department` and `addressbook`) and start a Jetty instance on port 8080.
@@ -54,10 +54,10 @@ It should create a SQLite database (`usermanager_db`) and populate two tables (`
 If that port is in use, start it on a different port. For example, port 8100:
 
 ```
-clojure -M:dev -m usermanager.main 8100
+clojure -M:dev -m usermanager.web.main 8100
 ```
 
-### Run the Application in REPL
+### Run the Application in a REPL
 
 Start REPL
 
@@ -68,13 +68,13 @@ $ clj -M:dev
 Once REPL starts, start the server as an example on port 8888:
 
 ```clj
-user=> (require 'usermanager.main)                             ; load the code
-user=> (in-ns 'usermanager.main)                               ; move to the namesapce
-usermanager.main=> (def system (new-system 8888))              ; specify port
-usermanager.main=> (alter-var-root #'system component/start)   ; start the server
+user=> (require 'usermanager.web.main)                           ; load the code
+user=> (in-ns 'usermanager.web.main)                             ; move to the namesapce
+usermanager.web.main=> (def system (new-system 8888))            ; specify port
+usermanager.web.main=> (alter-var-root #'system component/start) ; start the server
 ```
 
-### Run the tests
+### Run the Tests
 
 You can run all the tests via Polylith's `poly` tool:
 
@@ -82,12 +82,31 @@ You can run all the tests via Polylith's `poly` tool:
 clojure -M:poly test :all :dev
 ```
 
-_Normally you would just use `clojure -M:poly test` to run tests that depend on code that has changed since your last commit._
+_Normally you would just use `clojure -M:poly test` to run tests that depend on code that has changed since your last stable commit (see the [Polylith documentation](https://polylith.gitbook.io/) for more details)._
 
-## Stuff I Need To Do
+### Build and Run an Uberjar
 
-* There should be some real-world tests.
-* I might add a `datafy`/`nav` example.
+To build a compiled, runnable JAR file:
+
+```
+(cd projects/usermanager && clojure -X:uberjar)
+```
+
+This uses [`depstar`](https://github.com/seancorfield/depstar) under the hood to AOT-compile `usermanager.web.main` and build `usermanager.jar` in the `projects/usermanager` folder.
+
+To run that uberjar:
+
+```
+java -jar projects/usermanager/usermanager.jar
+```
+
+As with running the application from the Clojure CLI or the REPL above, this should create a SQLite database (`usermanager_db`) and populate two tables (`department` and `addressbook`) and start a Jetty instance on port 8080.
+
+If that port is in use, start it on a different port. For example, port 8100:
+
+```
+java -jar projects/usermanager/usermanager.jar 8100
+```
 
 # License & Copyright
 
