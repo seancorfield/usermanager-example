@@ -46,7 +46,7 @@ create table addressbook (
   email         varchar(64),
   department_id integer not null
 )")])
-      (println "Created database and addressbook table!")
+      (println "Created database. Created addressbook and department tables!")
       ;; if table creation was successful, it didn't exist before
       ;; so populate it...
       (try
