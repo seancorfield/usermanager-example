@@ -8,10 +8,11 @@ Step 3 (several commits):
 
 * In preparation for adding more `components` as I refactor the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
 * Then I refactored the monolithic `usermanager` component into `app-state`, `database`, `department`, `schema`, `schema-fixture` (test-only), `user`, and `web-server` components.
+* `schema` has a subinterface for each table, so that new tables can be added and they are created and populated on the first run of the application without affecting previously created tables.
 * You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
 * You still build the uberjar with `(cd projects/usermanager && clojure -X:uberjar)`
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
-* While `clojure -M:poly test :dev` works, `clojure -M:poly test :project` does not -- I'm trying to figure out how you can have test-only components and still run project tests _without adding the component as a dependency since we do not want it in the JAR!_.
+* While `clojure -M:poly test :dev` works, `clojure -M:poly test :project` does not -- _awaiting a bug fix in the `poly` test runner._
 
 Step 2:
 
