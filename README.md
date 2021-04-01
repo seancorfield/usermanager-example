@@ -4,10 +4,14 @@ This is a simple web application using [Component](https://github.com/stuartsier
 
 On this branch, it is being migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
-Step 3 in progress:
+Step 3 (several commits):
 
-* In preparation for adding more `components` as I refactor the code, switch back to the more standard `interface` naming convention from `api` which worked for the somewhat monolithic component identified in Step 2. So `usermanager.usermanager.interface` is the main component entry point and `usermanager.usermanager.model` implements that `interface`.
-* Refactor out `app-state`, `database`, and `web-server` components.
+* In preparation for adding more `components` as I refactor the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
+* Then I refactored the monolithic `usermanager` component into `app-state`, `database`, `department`, `schema`, `schema-fixture` (test-only), `user`, and `web-server` components.
+* You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
+* You still build the uberjar with `(cd projects/usermanager && clojure -X:uberjar)`
+* You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
+* While `clojure -M:poly test :dev` works, `clojure -M:poly test :project` does not -- I'm trying to figure out how you can have test-only components and still run project tests _without adding the component as a dependency since we do not want it in the JAR!_.
 
 Step 2:
 
@@ -21,8 +25,6 @@ Step 1 was:
 * The application can be built in `projects/usermanager`,
 * The application can be run in `:dev` mode,
 * The tests can all be run via the `poly` tool.
-
-The next step is to break the application apart into components and rename namespaces to follow their new structure.
 
 > Note: my "Step 1" above is a combination of what the Polylith documentations refers to as steps 1 (create the empty workspace) and 2 (move the legacy app into a base) -- so "Step 2" above is Polylith's step 3, and "Step 3" onward is multiple iterations of Polylith's step 4. Nothing confusing about that, eh?
 

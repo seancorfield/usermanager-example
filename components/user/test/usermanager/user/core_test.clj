@@ -1,6 +1,8 @@
 ;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
 
-(ns usermanager.usermanager.model-test
-  "These tests use H2 in-memory."
+(ns usermanager.user.core-test
   (:require [clojure.test :as test :refer [deftest is testing]]
-            [usermanager.usermanager.model :as sut]))
+            [usermanager.user.core :as sut]))
+
+(deftest dummy-test
+  (is (= 1 1)))
