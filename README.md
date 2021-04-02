@@ -43,10 +43,13 @@ Clojure 1.10 (or later) is required. The "model" of this example app uses namesp
 
 ## Usage
 
-Clone the repo, `cd` into it, then follow below to _Run the Application_ or _Run the application in REPL_
+Clone the repo, `cd` into it, then follow below to _Run the Application_ or _Run the application in a REPL_
 or _Run the tests_.
 
 ### Run the Application
+
+You can run the application from the root of the workspace:
+
 ```
 clojure -M:dev -m usermanager.web.main
 ```
@@ -67,13 +70,19 @@ Start REPL
 $ clj -M:dev
 ```
 
-Once REPL starts, start the server as an example on port 8888:
+Once REPL starts, start the server on port 8888, for example:
 
 ```clj
 user=> (require 'usermanager.web.main)                           ; load the code
 user=> (in-ns 'usermanager.web.main)                             ; move to the namesapce
 usermanager.web.main=> (def system (new-system 8888))            ; specify port
 usermanager.web.main=> (alter-var-root #'system component/start) ; start the server
+```
+
+When you exit the REPL, the server will shutdown. You can shut it down in the REPL like this:
+
+```clj
+usermanager.web.main=> (alter-var-root #'system component/stop)   ; stop the server
 ```
 
 ### Run the Tests
@@ -84,7 +93,7 @@ You can run all the tests via Polylith's `poly` tool:
 clojure -M:poly test :all :dev
 ```
 
-_Normally you would just use `clojure -M:poly test` to run tests that depend on code that has changed since your last stable commit (see the [Polylith documentation](https://polylith.gitbook.io/) for more details)._
+_Normally you would just use `clojure -M:poly test` or `clojure -M:poly test :dev` to run tests that depend on code that has changed since your last stable commit (see the [Polylith documentation](https://polylith.gitbook.io/) for more details)._
 
 ### Build and Run an Uberjar
 
@@ -109,6 +118,8 @@ If that port is in use, start it on a different port. For example, port 8100:
 ```
 java -jar projects/usermanager/usermanager.jar 8100
 ```
+
+Stop the application with ctrl-C (`^C`) on Linux/macOS or ctrl-Z (`^Z`) on Windows.
 
 # License & Copyright
 
