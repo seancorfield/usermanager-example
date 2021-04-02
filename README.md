@@ -6,6 +6,8 @@ Clojure beginners often ask for a "complete" example that they can look at to se
 
 A variant using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), inspired by this example repo, can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
 
+A version of this application that uses the [Polylith architecture](https://polylith.gitbook.io/) is also available, on the [`polylith` branch](https://github.com/seancorfield/usermanager-example/tree/polylith).
+
 ## Requirements
 
 This example assumes that you have a recent version of the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed (at least 1.10.1.727), and provides a `deps.edn` file.
