@@ -1,5 +1,5 @@
 {:paths ["src" "resources"]
  :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
 
-        ring/ring {:mvn/version "1.8.2"}}
+        ring/ring {:mvn/version "1.9.2"}}
  :aliases {:test {:extra-paths ["test"]}}}
