@@ -6,7 +6,7 @@ On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.
 
 ![Workspace](/images/workspace.png "Workspace")
 
-Step 1 was:
+Following Polylith's [Transitioning to Polylith](https://polylith.gitbook.io/polylith/conclusion/should-you-convert-your-system) guide, steps 1 & 2 were:
 
 * The entire application was moved to `bases/web` without any renaming,
 * `workspace.edn` was added,
@@ -15,11 +15,11 @@ Step 1 was:
 * The application can be run in `:dev` mode,
 * The tests can all be run via the `poly` tool.
 
-Step 2:
+Step 3:
 
 * The application was split into `bases/web` and `components/usermanager`, namespaces were updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` were the two entry points; the old `usermanager.model.user-manager` became `usermanager.usermanager.model` to implement the `api`).
 
-Step 3 (several commits):
+Step 4 (several commits):
 
 * In preparation for adding more `components` as I refactored the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
 * Then I refactored the monolithic `usermanager` component into `app-state`, `database`, `department`, `schema`, `schema-fixture` (test-only), `user`, and `web-server` components.
@@ -27,9 +27,7 @@ Step 3 (several commits):
 * You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
 * You still build the uberjar with `(cd projects/usermanager && clojure -X:uberjar)`
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
-* While `clojure -M:poly test :dev` works, `clojure -M:poly test :project` does not -- _awaiting a bug fix in the `poly` test runner._
-
-> Note: my "Step 1" above is a combination of what the Polylith documentations refers to as steps 1 (create the empty workspace) and 2 (move the legacy app into a base) -- so "Step 2" above is Polylith's step 3, and "Step 3" is multiple iterations of Polylith's step 4. Nothing confusing about that, eh?
+* You can run all the tests with `clojure -M:poly test :all :dev`, or just tests for things changed since the last stable tag with `clojure -M:poly test` (optionally with `:dev`).
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
