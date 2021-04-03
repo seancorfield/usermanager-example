@@ -27,7 +27,9 @@ Step 4 (several commits):
 * You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
 * You still build the uberjar with `(cd projects/usermanager && clojure -X:uberjar)`
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
-* You can run all the tests with `clojure -M:poly test :all :dev`, or just tests for things changed since the last stable tag with `clojure -M:poly test` (optionally with `:project`).
+* You can run tests for code that has changed since the last stable tag with `clojure -M:poly test` (optionally with `:project` to also run project tests). You can run the entire suite of tests with `clojure -M:poly test :all :dev`.
+
+> Note: this repo is tracking the [issue-66 branch of the Polylith tool](https://github.com/polyfy/polylith/tree/issue-66) which has a number of improvements, when working with the Clojure CLI and `deps.edn`.
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
