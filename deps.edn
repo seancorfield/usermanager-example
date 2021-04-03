@@ -46,5 +46,5 @@
                    :extra-deps {polyfy/polylith
                                 {#_#_:local/root "/Developer/workspace/polylith/projects/poly"
                                  :git/url   "https://github.com/polyfy/polylith"
-                                 :sha       "783916018b20a76f9054af8086e09e8f3335a3ae"
+                                 :sha       "500c31e95f88a80036b74c9b20712122bbf25a34"
                                  :deps/root "projects/poly"}}}}}
