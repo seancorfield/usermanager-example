@@ -2,6 +2,8 @@
 
 This is a simple web application using [Component](https://github.com/stuartsierra/component), [Ring](https://github.com/ring-clojure/ring), [Compojure](https://github.com/weavejester/compojure), and [Selmer](https://github.com/yogthos/Selmer) connected to a local SQLite database.
 
+Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
+
 On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
 ![Workspace](/images/workspace.png "Workspace")
@@ -15,11 +17,11 @@ Following Polylith's [Transitioning to Polylith](https://polylith.gitbook.io/pol
 * The application can be run in `:dev` mode,
 * The tests can all be run via the `poly` tool.
 
-Step 3:
+Step 3 was:
 
 * The application was split into `bases/web` and `components/usermanager`, namespaces were updated to reflect the full split (`usermanager.web.main` and `usermanager.usermanager.api` were the two entry points; the old `usermanager.model.user-manager` became `usermanager.usermanager.model` to implement the `api`).
 
-Step 4 (several commits):
+Step 4, over several iterations, was:
 
 * In preparation for adding more `components` as I refactored the code, I switched back to the more standard `interface` naming convention from `api` (which worked for the somewhat monolithic component identified in Step 2). So `usermanager.usermanager.interface` became the main component entry point and `usermanager.usermanager.model` implemented that `interface`.
 * Then I refactored the monolithic `usermanager` component into `app-state`, `database`, `department`, `schema`, `schema-fixture` (test-only), `user`, and `web-server` components.
@@ -30,8 +32,6 @@ Step 4 (several commits):
 * You can run tests for code that has changed since the last stable tag with `clojure -M:poly test` (optionally with `:project` to also run project tests). You can run the entire suite of tests with `clojure -M:poly test :all :dev`.
 
 > Note: this repo is tracking the [issue-66 branch of the Polylith tool](https://github.com/polyfy/polylith/tree/issue-66) which has a number of improvements, when working with the Clojure CLI and `deps.edn`.
-
-Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
 A variant of the non-Polylith version of this example application, using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
 
