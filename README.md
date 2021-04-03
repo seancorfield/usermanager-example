@@ -27,7 +27,7 @@ Step 4 (several commits):
 * You still start the application with `clojure -M:dev -m usermanager.web.main` (with an optional port number).
 * You still build the uberjar with `(cd projects/usermanager && clojure -X:uberjar)`
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
-* You can run all the tests with `clojure -M:poly test :all :dev`, or just tests for things changed since the last stable tag with `clojure -M:poly test` (optionally with `:dev`).
+* You can run all the tests with `clojure -M:poly test :all :dev`, or just tests for things changed since the last stable tag with `clojure -M:poly test` (optionally with `:project`).
 
 Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
 
