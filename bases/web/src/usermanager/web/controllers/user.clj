@@ -32,15 +32,15 @@
 (defn default
   [req]
   (assoc-in req [:params :message]
-                (str "Welcome to the User Manager application demo! "
-                     "This uses Polylith, Compojure, Ring, and Selmer (and next.jdbc).")))
+            (str "Welcome to the User Manager application demo! "
+                 "This uses Polylith, Compojure, Ring, and Selmer (and next.jdbc).")))
 
 (defn delete-by-id
   "Compojure has already coerced the :id parameter to an int."
   [req]
   (swap! changes inc)
   (user/delete-by-id (-> req :application/component :database)
-                          (get-in req [:params :id]))
+                     (get-in req [:params :id]))
   (resp/redirect "/user/list"))
 
 (defn edit
