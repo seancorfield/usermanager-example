@@ -19,7 +19,7 @@
   (let [data (assoc (:params req) :changes @changes)
         view (:application/view req "default")
         html (tmpl/render-file (str "views/user/" view ".html") data)]
-    (-> (resp/response (tmpl/render-file (str "layouts/default.html")
+    (-> (resp/response (tmpl/render-file "layouts/default.html"
                                          (assoc data :body [:safe html])))
         (resp/content-type "text/html"))))
 
