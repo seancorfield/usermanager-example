@@ -52,7 +52,7 @@ usermanager.main=> (alter-var-root #'system component/start)   ; start the serve
 ### Run the tests with:
 
 ```
-clj -M:test:runner
+clj -X:test:runner
 ```
 
 _There aren't any tests yet but I will create some soon!_
