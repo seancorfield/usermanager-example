@@ -1,5 +1,5 @@
 {:paths ["src" "resources"]
- :deps {com.github.seancorfield/next.jdbc {:mvn/version "1.1.646"}
+ :deps {com.github.seancorfield/next.jdbc {:mvn/version "1.2.691"}
 
         com.stuartsierra/component {:mvn/version "1.0.0"}}
  :aliases {:test {:extra-paths ["test"]

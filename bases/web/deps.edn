@@ -3,9 +3,9 @@
  :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
 
         compojure/compojure {:mvn/version "1.6.2"}
-        ring/ring {:mvn/version "1.9.2"}
-        ring/ring-defaults {:mvn/version "0.3.2"}
+        ring/ring {:mvn/version "1.9.4"}
+        ring/ring-defaults {:mvn/version "0.3.3"}
 
-        selmer/selmer {:mvn/version "1.12.33"}}
+        selmer/selmer {:mvn/version "1.12.44"}}
 
  :aliases {:test {:extra-paths ["test"]}}}
