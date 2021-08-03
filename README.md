@@ -31,8 +31,6 @@ Step 4, over several iterations, was:
 * You still run the uberjar with `java -jar projects/usermanager/usermanager.jar` (with an optional port number).
 * You can run tests for code that has changed since the last stable tag with `clojure -M:poly test` (optionally with `:project` to also run project tests). You can run the entire suite of tests with `clojure -M:poly test :all :dev`.
 
-> Note: this repo is tracking the [issue-66 branch of the Polylith tool](https://github.com/polyfy/polylith/tree/issue-66) which has a number of improvements, when working with the Clojure CLI and `deps.edn`.
-
 A variant of the non-Polylith version of this example application, using [Integrant](https://github.com/weavejester/integrant) and [Reitit](https://github.com/metosin/reitit) (instead of Component and Compojure), can be found in [Michaël Salihi's repo](https://github.com/PrestanceDesign/usermanager-reitit-integrant-example).
 
 ## Requirements

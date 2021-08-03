@@ -18,16 +18,16 @@
                                 "components/web-server/resources"]
                   :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
 
-                               com.github.seancorfield/next.jdbc {:mvn/version "1.1.646"}
+                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.691"}
                                com.stuartsierra/component {:mvn/version "1.0.0"}
 
                                compojure/compojure {:mvn/version "1.6.2"}
-                               ring/ring {:mvn/version "1.9.2"}
-                               ring/ring-defaults {:mvn/version "0.3.2"}
+                               ring/ring {:mvn/version "1.9.4"}
+                               ring/ring-defaults {:mvn/version "0.3.3"}
 
-                               org.xerial/sqlite-jdbc {:mvn/version "3.34.0"}
+                               org.xerial/sqlite-jdbc {:mvn/version "3.36.0.1"}
 
-                               selmer/selmer {:mvn/version "1.12.33"}}}
+                               selmer/selmer {:mvn/version "1.12.44"}}}
 
             :test {:extra-paths ["development/test"
                                  "bases/web/test"
@@ -45,5 +45,5 @@
             :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
                    :extra-deps {polyfy/polylith
                                 {:git/url   "https://github.com/polyfy/polylith"
-                                 :sha       "99a044b02f2bcc0b6525dbee3dca3fa5f2966cea"
+                                 :sha       "40d2f621963cb62ef4557f38d560e9f6dcf4c5be"
                                  :deps/root "projects/poly"}}}}}
