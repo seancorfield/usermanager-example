@@ -18,7 +18,7 @@
                                 "components/web-server/resources"]
                   :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
 
-                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.691"}
+                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.689"}
                                com.stuartsierra/component {:mvn/version "1.0.0"}
 
                                compojure/compojure {:mvn/version "1.6.2"}
