@@ -40,7 +40,8 @@
             [ring.middleware.defaults :as ring-defaults]
             [ring.util.response :as resp]
             [usermanager.controllers.user :as user-ctl]
-            [usermanager.model.user-manager :as model]))
+            [usermanager.model.user-manager :as model])
+  (:gen-class))
 
 ;; Implement your application's lifecycle here:
 ;; Although the application config is not used in this simple

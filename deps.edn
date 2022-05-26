@@ -14,8 +14,9 @@
  :aliases
  {:test {:extra-paths ["test"]
          :extra-deps
-         {com.h2database/h2 {:mvn/version "1.4.200"}}}
-  :runner {:extra-deps {io.github.cognitect-labs/test-runner
-                        {:git/url "https://github.com/cognitect-labs/test-runner"
-                         :sha "2d69f33d7980c3353b246c28f72ffeafbd9f2fab"}}
-           :exec-fn cognitect.test-runner.api/test}}}
+         {com.h2database/h2 {:mvn/version "1.4.200"}
+          io.github.cognitect-labs/test-runner
+          {:git/tag "v0.5.1" :git/sha "dfb30dd"}}}
+  :build {:replace-deps {io.github.seancorfield/build-clj
+                         {:git/tag "v0.8.0" :git/sha "9bd8b8a"}}
+          :ns-default build}}}
