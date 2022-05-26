@@ -1,3 +1,8 @@
-.cpcache
+/.cpcache
+/.clj-kondo/.cache
 /.lsp
+/.nrepl-port
+/.portal
+/.socket-repl-port
+/target
 /usermanager_db

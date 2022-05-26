@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2021 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2022 Sean Corfield, all rights reserved
 
 (ns usermanager.main
   "This is an example web application, using just a few basic Clojure
