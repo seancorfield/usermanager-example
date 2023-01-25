@@ -61,7 +61,7 @@ You should see something like this:
 Running task for: test
 
 Running tests in #{"test"}
-2022-05-25 18:19:45.138:INFO::main: Logging initialized @6494ms to org.eclipse.jetty.util.log.StdErrLog
+2023-01-24 22:31:01.269:INFO::main: Logging initialized @4050ms to org.eclipse.jetty.util.log.StdErrLog
 
 Testing usermanager.model.user-manager-test
 Created database and addressbook table!
@@ -92,26 +92,26 @@ clojure -T:build ci
 That should produce the same output as `test` above, followed by something like:
 
 ```
-Cleaning target...
+Copying source...
 
-Skipping pom.xml because :lib and/or :version were omitted...
-Copying src, resources...
 Compiling usermanager.main...
-2022-05-25 18:20:13.069:INFO::main: Logging initialized @3981ms to org.eclipse.jetty.util.log.StdErrLog
-Building uberjar target/example-standalone.jar...
+2023-01-24 22:35:37.922:INFO::main: Logging initialized @2581ms to org.eclipse.jetty.util.log.StdErrLog
+
+Building JAR...
 ```
 
 The `target` folder will be created if it doesn't exist and it will include a `classes` folder containing all of the compiled Clojure source code from the `usermanager` application _and all of its dependencies_ including Clojure itself:
 
 ```
 $ ls target/classes/
-cheshire  clojure  clout  com  compojure  crypto  instaparse  json_html  layouts  medley  next  public  ring  selmer  usermanager  views
+camel_snake_kebab  clout  compojure  instaparse  medley  public  selmer       views
+clojure            com    crypto     layouts     next    ring    usermanager
 ```
 
 It will also include the standalone `.jar` file which you can run like this:
 
 ```
-java -jar target/example-standalone.jar
+java -jar target/usermanager/example-standalone.jar
 ```
 
 This should behave the same as the _Run the Application_ example above.
@@ -124,6 +124,6 @@ This JAR file can be deployed to any server that have Java installed and run wit
 
 # License & Copyright
 
-Copyright (c) 2015-2022 Sean Corfield.
+Copyright (c) 2015-2023 Sean Corfield.
 
 Distributed under the Apache Source License 2.0.
