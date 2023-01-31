@@ -16,8 +16,6 @@
                   :extra-deps {poly/schema-fixture {:local/root "../../components/schema-fixture"}
                                org.clojure/test.check {:mvn/version "1.1.0"}}}
 
-           :uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.278"}}
-                     :exec-fn hf.depstar/uberjar
-                     :exec-args {:jar "usermanager.jar"
-                                 :aot true
-                                 :main-class usermanager.web.main}}}}
+           :build {:replace-deps {io.github.clojure/tools.build
+                                  {:git/tag "v0.9.2" :git/sha "fe6b140"}}
+                   :ns-default build}}}

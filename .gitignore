@@ -1,7 +1,11 @@
 .cpcache
 *.jar
 .DS_Store
-/.lsp
+/.clj-kondo/.cache
+/.lsp/.cache
+/.portal/vs-code.edn
 /.rebel_readline_history
 /.socket-repl-port
+/projects/*/target/
+/target/
 /usermanager_db

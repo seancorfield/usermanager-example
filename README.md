@@ -97,15 +97,15 @@ _Normally you would just use `clojure -M:poly test` or `clojure -M:poly test :de
 To build a compiled, runnable JAR file:
 
 ```
-(cd projects/usermanager && clojure -X:uberjar)
+(cd projects/usermanager && clojure -T:build uber)
 ```
 
-This uses [`depstar`](https://github.com/seancorfield/depstar) under the hood to AOT-compile `usermanager.web.main` and build `usermanager.jar` in the `projects/usermanager` folder.
+This uses [`tools.build`](https://github.com/clojure/tools.build) under the hood to AOT-compile `usermanager.web.main` and build `usermanager-standalone.jar` in the `projects/usermanager/target` folder.
 
 To run that uberjar:
 
 ```
-java -jar projects/usermanager/usermanager.jar
+java -jar projects/usermanager/target/usermanager-standalone.jar
 ```
 
 As with running the application from the Clojure CLI or the REPL above, this should create a SQLite database (`usermanager_db`) and populate two tables (`department` and `addressbook`) and start a Jetty instance on port 8080.
@@ -113,13 +113,13 @@ As with running the application from the Clojure CLI or the REPL above, this sho
 If that port is in use, start it on a different port. For example, port 8100:
 
 ```
-java -jar projects/usermanager/usermanager.jar 8100
+java -jar projects/usermanager/target/usermanager-standalone.jar 8100
 ```
 
 Stop the application with ctrl-C (`^C`) on Linux/macOS or ctrl-Z (`^Z`) on Windows.
 
 # License & Copyright
 
-Copyright (c) 2015-2021 Sean Corfield.
+Copyright (c) 2015-2023 Sean Corfield.
 
 Distributed under the Apache Source License 2.0.
