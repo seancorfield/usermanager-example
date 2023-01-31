@@ -4,5 +4,6 @@
 /.nrepl-port
 /.portal
 /.socket-repl-port
+/projects
 /target
 /usermanager_db

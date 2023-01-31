@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2022 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2023 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager
   "The model for the application. This is where the persistence happens,
