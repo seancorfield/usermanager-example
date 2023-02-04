@@ -72,7 +72,6 @@ Ran 3 tests containing 9 assertions.
 ```
 
 This uses the `:build` alias to load the `build.clj` file, based on [`tools.build`](https://clojure.org/guides/tools_build), and run the `test` task.
-That in turn runs the `run-tests` task from my [`build-clj`](https://github.com/seancorfield/build-clj) wrapper for `tools.build`, that provide "sane" defaults for the myriad options in `tools.build` so you can write simpler `build.clj` files.
 
 ## Build an Uberjar
 
