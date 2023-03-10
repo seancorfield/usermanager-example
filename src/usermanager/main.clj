@@ -143,7 +143,7 @@
 ;; Standard web server component -- knows how to stop and start your chosen
 ;; web server... uses Jetty but explains how to use http-kit instead:
 ;; lifecycle for the specified web server in which we run
-(defrecord WebServer [handler-fn server port ; parameters
+(defrecord WebServer [handler-fn port        ; parameters
                       application            ; dependencies
                       http-server shutdown]  ; state
   component/Lifecycle
