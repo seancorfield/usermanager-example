@@ -1,0 +1,24 @@
+{
+  "name": "Clojure user-manager example",
+  "build": {
+    "dockerfile": "Dockerfile.dev"
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Run commands on cluster first start.
+  // "postCreateCommand": "",
+  // Copy host env vars into the devcontainer.  You can also refer to some_file.env files in your docker-compose setup.
+  "remoteEnv": {},
+  // Configure tool-specific properties.
+  "customizations": {
+    // Editor plugins and settings
+    "vscode": {
+      "extensions": [
+        "betterthantomorrow.calva"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+FROM clojure:temurin-20-tools-deps-jammy
+# Details as of 2023-09-19:
+# Ubuntu: Ubuntu 22.04 LTS (Jammy Jellyfish)
+# JDK: eclipse-temurin 20
+# Clojure: tools-deps, 1.11.1.1347
+
+# Extra tools
+RUN apt-get update && apt-get install -y gpg curl
+
+# Install deps-new and clj-new (prefer deps-new, but clj-new is needed for some templates)
+
+RUN clojure -Ttools install io.github.seancorfield/deps-new '{:git/tag "v0.5.2"}' :as deps-new
+RUN clojure -Ttools install com.github.seancorfield/clj-new '{:git/tag "v1.2.399"}' :as clj-new
+
+# Add Babashka
+
+RUN curl -sLO https://raw.githubusercontent.com/babashka/babashka/master/install \
+  && chmod +x install \
+  && ./install --static
