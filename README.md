@@ -11,7 +11,7 @@ A version of this application that uses the [Polylith architecture](https://poly
 ## Quickstart via Devcontainers or Github Codespaces
 If you have configured your Github account, you can start the project without any other setup.  It will open a web-based vscode editor backed by a Github Codespace VM. (Codespaces is Github's hosted Devcontainer solution)
 
-[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jwhitlark/usermanager-example)
+[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/seancorfield/usermanager-example)
 
 You can also clone this repo locally, and using vscode (with the devcontainer plugin), and Docker Desktop, run an isolated, fully setup version of this application locally. Open the repo in your editor and run the command `Dev Containers: Open Folder in Container...`.
 
