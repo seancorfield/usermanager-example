@@ -8,6 +8,13 @@ A variant using [Integrant](https://github.com/weavejester/integrant) and [Reiti
 
 A version of this application that uses the [Polylith architecture](https://polylith.gitbook.io/) is also available, on the [`polylith` branch](https://github.com/seancorfield/usermanager-example/tree/polylith).
 
+## Quickstart via Devcontainers or Github Codespaces
+If you have configured your Github account, you can start the project without any other setup.  It will open a web-based vscode editor backed by a Github Codespace VM. (Codespaces is Github's hosted Devcontainer solution)
+
+[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/jwhitlark/usermanager-example)
+
+You can also clone this repo locally, and using vscode (with the devcontainer plugin), and Docker Desktop, run an isolated, fully setup version of this application locally. Open the repo in your editor and run the command `Dev Containers: Open Folder in Container...`.
+
 ## Requirements
 
 This example assumes that you have a recent version of the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed (at least 1.10.3.933), and provides a `deps.edn` file, and a `build.clj` file.
