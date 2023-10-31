@@ -6,7 +6,7 @@ Clojure beginners often ask for a "complete" example that they can look at to se
 
 On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
-![Workspace](/images/workspace.png "Workspace")
+![Workspace](/images/user-manager.png "Workspace")
 
 Following Polylith's [Transitioning to Polylith](https://polylith.gitbook.io/polylith/conclusion/should-you-convert-your-system) guide, steps 1 & 2 were:
 

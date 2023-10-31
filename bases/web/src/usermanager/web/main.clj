@@ -135,10 +135,7 @@
   (def system (new-system 8888))
   (alter-var-root #'system component/start)
   (alter-var-root #'system component/stop)
-  ;; the period here just "anchors" the closing paren on this line,
-  ;; which makes it easier to put you cursor at the end of the lines
-  ;; above when you want to evaluate them into the REPL:
-  .)
+  )
 
 (defonce ^:private
   ^{:doc "This exists so that if you run a socket REPL when
