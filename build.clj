@@ -13,7 +13,7 @@
                    :main      'clojure.main
                    :main-args ["-m" "cognitect.test-runner"]})
         {:keys [exit]} (b/process cmds)]
-    (when-not (zero? exit) (throw "Tests failed")))
+    (when-not (zero? exit) (throw (ex-info "Tests failed" {:exit exit}))))
   opts)
 
 (defn- uber-opts [opts]
