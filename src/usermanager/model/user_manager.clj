@@ -8,8 +8,7 @@
             [next.jdbc :as jdbc]
             [next.jdbc.sql :as sql]
             [next.jdbc.xt] ; activate XTDB support
-            [xtdb.client :as xtc]
-            [xtdb.node :as xtn]))
+            [xtdb.client :as xtc]))
 
 ;; our initial data -- xt$id is added on insertion:
 
@@ -33,7 +32,7 @@
                    (catch Exception _)))
     (try
       (doseq [[ix d] (map-indexed vector departments)]
-        (sql/insert! (db) :department {:department/name d :xt$id (inc ix)}))
+        (sql/insert! (db) :department {:name d :xt$id (inc ix)}))
       (doseq [a initial-user-data]
         (sql/insert! (db) :addressbook (assoc a :xt$id (str (random-uuid)))))
       (println "Populated database with initial data!")
@@ -99,8 +98,8 @@
   "Save a user record. If ID is present and not empty, then
   this is an update operation, otherwise it's an insert."
   [db user]
-  (let [id   (:id user)
-        user (dissoc user :id)]
+  (let [id   (:xt$id user)
+        user (dissoc user :xt$id)]
     (if (seq id)
       ;; update
       (sql/update! (db) :addressbook user {:addressbook.xt$id id})

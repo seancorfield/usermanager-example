@@ -2,7 +2,8 @@
 
 (ns usermanager.controllers.user
   "The main controller for the user management portion of this app."
-  (:require [ring.util.response :as resp]
+  (:require [clojure.set :refer [rename-keys]]
+            [ring.util.response :as resp]
             [selmer.parser :as tmpl]
             [usermanager.model.user-manager :as model]))
 
@@ -72,8 +73,9 @@
   (swap! changes inc)
   (-> req
       :params
-      ;; get just the form fields we care about:
-      (select-keys [:id :first_name :last_name :email :department_id])
+      (rename-keys {:id :xt$id}) ; rename form field to match model
+      ;; get just the fields we care about:
+      (select-keys [:xt$id :first_name :last_name :email :department_id])
       ;; convert form fields to numeric:)
       (update :department_id #(some-> % not-empty Long/parseLong))
       (->> (model/save-user (-> req :application/component :database))))

@@ -43,8 +43,7 @@
     (is (= "sean@corfield.org"
            (:email
             (do ; update
-              (model/save-user @test-db {:xt$id id
-                                         :email "sean@corfield.org"})
+              (model/save-user @test-db {:xt$id id :email "sean@corfield.org"})
               (model/get-user-by-id @test-db id)))))
     (is (= 1 (count (model/get-users @test-db))))
     (model/save-user @test-db {:first_name "Sean"
