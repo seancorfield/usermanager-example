@@ -1,11 +1,11 @@
 {:paths ["src" "resources"]
 
- :deps {com.stuartsierra/component {:mvn/version "1.0.0"}
+ :deps {com.stuartsierra/component {:mvn/version "1.1.0"}
 
-        compojure/compojure {:mvn/version "1.6.2"}
-        ring/ring {:mvn/version "1.9.4"}
-        ring/ring-defaults {:mvn/version "0.3.3"}
+        compojure/compojure {:mvn/version "1.7.0"}
+        ring/ring {:mvn/version "1.11.0"}
+        ring/ring-defaults {:mvn/version "0.4.0"}
 
-        selmer/selmer {:mvn/version "1.12.44"}}
+        selmer/selmer {:mvn/version "1.12.59"}}
 
  :aliases {:test {:extra-paths ["test"]}}}

@@ -16,18 +16,18 @@
                                 "components/user/resources"
                                 "components/web-server/src"
                                 "components/web-server/resources"]
-                  :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
+                  :extra-deps {org.clojure/clojure {:mvn/version "1.11.1"}
 
-                               com.github.seancorfield/next.jdbc {:mvn/version "1.2.689"}
-                               com.stuartsierra/component {:mvn/version "1.0.0"}
+                               com.github.seancorfield/next.jdbc {:mvn/version "1.3.909"}
+                               com.stuartsierra/component {:mvn/version "1.1.0"}
 
-                               compojure/compojure {:mvn/version "1.6.2"}
-                               ring/ring {:mvn/version "1.9.4"}
-                               ring/ring-defaults {:mvn/version "0.3.3"}
+                               compojure/compojure {:mvn/version "1.7.0"}
+                               ring/ring {:mvn/version "1.11.0"}
+                               ring/ring-defaults {:mvn/version "0.4.0"}
 
-                               org.xerial/sqlite-jdbc {:mvn/version "3.36.0.1"}
+                               org.xerial/sqlite-jdbc {:mvn/version "3.44.1.0"}
 
-                               selmer/selmer {:mvn/version "1.12.44"}}}
+                               selmer/selmer {:mvn/version "1.12.59"}}}
 
             :test {:extra-paths ["development/test"
                                  "bases/web/test"
@@ -39,11 +39,8 @@
                                  "components/user/test"
                                  "components/web-server/test"
                                  "projects/usermanager/test"]
-                   :extra-deps {com.h2database/h2 {:mvn/version "1.4.200"}
-                                org.clojure/test.check {:mvn/version "1.1.0"}}}
+                   :extra-deps {com.h2database/h2 {:mvn/version "2.2.224"}
+                                org.clojure/test.check {:mvn/version "1.1.1"}}}
 
             :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
-                   :extra-deps {polyfy/polylith
-                                {:git/url   "https://github.com/polyfy/polylith"
-                                 :sha       "40d2f621963cb62ef4557f38d560e9f6dcf4c5be"
-                                 :deps/root "projects/poly"}}}}}
+                   :extra-deps {polylith/clj-poly {:mvn/version "0.2.18"}}}}}

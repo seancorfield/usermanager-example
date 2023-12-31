@@ -2,7 +2,7 @@
 
 This is a simple web application using [Component](https://github.com/stuartsierra/component), [Ring](https://github.com/ring-clojure/ring), [Compojure](https://github.com/weavejester/compojure), and [Selmer](https://github.com/yogthos/Selmer) connected to a local SQLite database.
 
-Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together and for a long time I pointed them at the User Manager example in the Framework One for Clojure repo -- but since I EOL'd that framework and I'd already rewritten the example app to no longer use the framework, it's just confusing to point them there, so this is a self-contained repo containing just that web app example.
+Clojure beginners often ask for a "complete" example that they can look at to see how these common libraries fit together so this is a self-contained repo containing a fully-functional web app example.
 
 On this branch, it has been migrated to the [Polylith](https://polylith.gitbook.io/) architecture:
 
