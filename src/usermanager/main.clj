@@ -126,17 +126,17 @@
   need to define our route handlers so that they can be parameterized."
   [application]
   (let-routes [wrap (middleware-stack application #'my-middleware)]
-    (GET  "/"                        []              (wrap #'user-ctl/default))
+    (GET  "/"                            [] (wrap #'user-ctl/default))
     ;; horrible: application should POST to this URL!
-    (GET  "/user/delete/:id{[0-9]+}" [id :<< as-int] (wrap #'user-ctl/delete-by-id))
+    (GET  "/user/delete/:id{[-0-9a-f]+}" [] (wrap #'user-ctl/delete-by-id))
     ;; add a new user:
-    (GET  "/user/form"               []              (wrap #'user-ctl/edit))
+    (GET  "/user/form"                   [] (wrap #'user-ctl/edit))
     ;; edit an existing user:
-    (GET  "/user/form/:id{[0-9]+}"   [id :<< as-int] (wrap #'user-ctl/edit))
-    (GET  "/user/list"               []              (wrap #'user-ctl/get-users))
-    (POST "/user/save"               []              (wrap #'user-ctl/save))
+    (GET  "/user/form/:id{[-0-9a-f]+}"   [] (wrap #'user-ctl/edit))
+    (GET  "/user/list"                   [] (wrap #'user-ctl/get-users))
+    (POST "/user/save"                   [] (wrap #'user-ctl/save))
     ;; this just resets the change tracker but really should be a POST :)
-    (GET  "/reset"                   []              (wrap #'user-ctl/reset-changes))
+    (GET  "/reset"                       [] (wrap #'user-ctl/reset-changes))
     (route/resources "/")
     (route/not-found "Not Found")))
 
@@ -219,10 +219,7 @@
   (def system (new-system 8888))
   (alter-var-root #'system component/start)
   (alter-var-root #'system component/stop)
-  ;; the comma here just "anchors" the closing paren on this line,
-  ;; which makes it easier to put you cursor at the end of the lines
-  ;; above when you want to evaluate them into the REPL:
-  ,)
+  )
 
 (defonce ^:private
   ^{:doc "This exists so that if you run a socket REPL when
@@ -241,7 +238,7 @@
   usermanager.main=> (def db (-> repl-system deref :application :database))
   #'usermanager.main/db
   usermanager.main=> (jdbc/execute! (db) [\"select * from addressbook\"])
-  [#:addressbook{:id 1, :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
+  [{:xt$id \"..\", :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
   usermanager.main=>"}
   repl-system
   (atom nil))

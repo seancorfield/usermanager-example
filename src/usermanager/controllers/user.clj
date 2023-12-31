@@ -35,7 +35,6 @@
                      "This uses just Compojure, Ring, and Selmer.")))
 
 (defn delete-by-id
-  "Compojure has already coerced the :id parameter to an int."
   [req]
   (swap! changes inc)
   (model/delete-user-by-id (-> req :application/component :database)
@@ -45,12 +44,11 @@
 (defn edit
   "Display the add/edit form.
 
-  If the :id parameter is present, Compojure will have coerced it to an
-  int and we can use it to populate the edit form by loading that user's
-  data from the addressbook."
+  If the :id parameter is present, we can use it to populate the edit
+  form by loading that user's data from the addressbook."
   [req]
   (let [db   (-> req :application/component :database)
-        user (when-let [id (get-in req [:params :id])]
+        user (when-let [id (not-empty (get-in req [:params :id]))]
                (model/get-user-by-id db id))]
     (-> req
         (update :params assoc
@@ -68,20 +66,15 @@
 
 (defn save
   "This works for saving new users as well as updating existing users, by
-  delegatin to the model, and either passing nil for :addressbook/id or
-  the numeric value that was passed to the edit form."
+   delegating to the model, and either passing nil for :xt$id or the value
+   that was passed to the edit form."
   [req]
   (swap! changes inc)
   (-> req
       :params
       ;; get just the form fields we care about:
       (select-keys [:id :first_name :last_name :email :department_id])
-      ;; convert form fields to numeric:
-      (update :id            #(some-> % not-empty Long/parseLong))
+      ;; convert form fields to numeric:)
       (update :department_id #(some-> % not-empty Long/parseLong))
-      ;; qualify their names for domain model:
-      (->> (reduce-kv (fn [m k v] (assoc! m (keyword "addressbook" (name k)) v))
-                      (transient {}))
-           (persistent!)
-           (model/save-user (-> req :application/component :database))))
+      (->> (model/save-user (-> req :application/component :database))))
   (resp/redirect "/user/list"))

@@ -27,6 +27,17 @@ Clone the repo, `cd` into it, then follow below to _Run the Application_ or _Run
 or _Run the tests_ or _Build an Uberjar_.
 
 ### Run the Application
+
+```
+docker pull ghcr.io/xtdb/xtdb-standalone-ea
+```
+
+```
+docker run -tip 3000:3000 ghcr.io/xtdb/xtdb-standalone-ea
+```
+
+In a separate terminal:
+
 ```
 clojure -M -m usermanager.main
 ```

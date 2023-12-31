@@ -1,29 +1,20 @@
 ;; copyright (c) 2019-2023 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager-test
-  "These tests use H2 in-memory."
+  "These tests use XTDB in-process."
   (:require [clojure.test :refer [deftest is use-fixtures]]
             [com.stuartsierra.component :as component]
-            [next.jdbc :as jdbc]
-            [usermanager.model.user-manager :as model]))
+            [next.jdbc.xt] ; activate XTDB support
+            [usermanager.model.user-manager :as model]
+            [xtdb.node :as xtn]))
 
 (def ^:private test-db (atom nil))
 
-(def ^:private db-spec {:dbtype "h2:mem"
-                        :dbname "usermanager_test"
-                        :database_to_upper false})
-
 (defn- with-test-db
-  "A test fixture that sets up an in-memory H2 database for running tests."
+  "A test fixture that sets up an in-process XTDB node for running tests."
   [t]
-  ;; clear out any existing in-memory data
-  (let [ds (jdbc/get-datasource db-spec)]
-    (try
-      (jdbc/execute-one! ds ["drop table department"])
-      (jdbc/execute-one! ds ["drop table addressbook"])
-      (catch Exception _)))
   (let [db (component/start
-            (model/map->Database {:db-spec db-spec}))]
+            (model/map->Database {:db-spec (xtn/start-node {})}))]
     (reset! test-db db)
     (t)
     (component/stop db)))
@@ -31,33 +22,39 @@
 (use-fixtures :once with-test-db)
 
 (deftest department-test
-  (is (= #:department{:id 1 :name "Accounting"}
+  (is (= {:xt$id 1 :name "Accounting"}
          (model/get-department-by-id @test-db 1)))
   (is (= 4 (count (model/get-departments @test-db)))))
 
 (deftest user-test
-  (is (= 1 (:addressbook/id (model/get-user-by-id @test-db 1))))
-  (is (= "Sean" (:addressbook/first_name
-                 (model/get-user-by-id @test-db 1))))
-  (is (= 4 (:addressbook/department_id
-            (model/get-user-by-id @test-db 1))))
-  (is (= 1 (count (model/get-users @test-db))))
-  (is (= "Development" (:department/name
-                        (first
-                         (model/get-users @test-db))))))
+  (let [id (:xt$id (first (model/get-users @test-db)))]
+    (is (= id (:xt$id (model/get-user-by-id @test-db id))))
+    (is (= "Sean" (:first_name
+                   (model/get-user-by-id @test-db id))))
+    (is (= 4 (:department_id
+              (model/get-user-by-id @test-db id))))
+    (is (= 1 (count (model/get-users @test-db))))
+    (is (= "Development" (:name
+                          (first
+                           (model/get-users @test-db)))))))
 
 (deftest save-test
-  (is (= "sean@corfield.org"
-         (:addressbook/email
-          (do
-            (model/save-user @test-db {:addressbook/id 1
-                                       :addressbook/email "sean@corfield.org"})
-            (model/get-user-by-id @test-db 1)))))
-  (is (= "seancorfield@hotmail.com"
-         (:addressbook/email
-          (do
-            (model/save-user @test-db {:addressbook/first_name "Sean"
-                                       :addressbook/last_name "Corfield"
-                                       :addressbook/department_id 4
-                                       :addressbook/email "seancorfield@hotmail.com"})
-            (model/get-user-by-id @test-db 2))))))
+  (let [id (:xt$id (first (model/get-users @test-db)))]
+    (is (= "sean@corfield.org"
+           (:email
+            (do ; update
+              (model/save-user @test-db {:xt$id id
+                                         :email "sean@corfield.org"})
+              (model/get-user-by-id @test-db id)))))
+    (is (= 1 (count (model/get-users @test-db))))
+    (model/save-user @test-db {:first_name "Sean"
+                               :last_name "Corfield"
+                               :department_id 4
+                               :email "seancorfield@hotmail.com"})
+    ;; insert:
+    (is (= 2 (count (model/get-users @test-db))))
+    (is (= "seancorfield@hotmail.com"
+           (:email
+            (let [new-user (first (filter #(not= id (:xt$id %))
+                                          (model/get-users @test-db)))]
+              (model/get-user-by-id @test-db (:xt$id new-user))))))))
