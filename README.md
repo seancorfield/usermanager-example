@@ -76,13 +76,14 @@ You should see something like this:
 Running task for: test
 
 Running tests in #{"test"}
-2023-01-24 22:31:01.269:INFO::main: Logging initialized @4050ms to org.eclipse.jetty.util.log.StdErrLog
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
 
 Testing usermanager.model.user-manager-test
-Created database and addressbook table!
 Populated database with initial data!
 
-Ran 3 tests containing 9 assertions.
+Ran 3 tests containing 11 assertions.
 0 failures, 0 errors.
 ```
 
@@ -109,7 +110,9 @@ That should produce the same output as `test` above, followed by something like:
 Copying source...
 
 Compiling usermanager.main...
-2023-01-24 22:35:37.922:INFO::main: Logging initialized @2581ms to org.eclipse.jetty.util.log.StdErrLog
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
 
 Building JAR...
 ```
@@ -118,8 +121,8 @@ The `target` folder will be created if it doesn't exist and it will include a `c
 
 ```
 $ ls target/classes/
-camel_snake_kebab  clout  compojure  instaparse  medley  public  selmer       views
-clojure            com    crypto     layouts     next    ring    usermanager
+camel_snake_kebab  clout      com        crypto      juxt     medley  public  selmer         usermanager  xtdb
+clojure            cognitect  compojure  instaparse  layouts  next    ring    time_literals  views
 ```
 
 It will also include the standalone `.jar` file which you can run like this:
