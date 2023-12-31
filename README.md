@@ -8,6 +8,8 @@ A variant using [Integrant](https://github.com/weavejester/integrant) and [Reiti
 
 A version of this application that uses the [Polylith architecture](https://polylith.gitbook.io/) is also available, on the [`polylith` branch](https://github.com/seancorfield/usermanager-example/tree/polylith).
 
+A version of this application that uses the [XTDB 2 database](https://xtdb.com/) instead of SQLite/H2 is also available, on the [`xtdb` branch](https://github.com/seancorfield/usermanager-example/tree/xtdb).
+
 ## Quickstart via Devcontainers or Github Codespaces
 If you have configured your Github account, you can start the project without any other setup.  It will open a web-based vscode editor backed by a Github Codespace VM. (Codespaces is Github's hosted Devcontainer solution)
 
@@ -51,7 +53,7 @@ Once REPL starts, start the server as an example on port 8888:
 
 ```clj
 user=> (require 'usermanager.main)                             ; load the code
-user=> (in-ns 'usermanager.main)                               ; move to the namesapce
+user=> (in-ns 'usermanager.main)                               ; move to the namespace
 usermanager.main=> (def system (new-system 8888))              ; specify port
 usermanager.main=> (alter-var-root #'system component/start)   ; start the server
 ```
