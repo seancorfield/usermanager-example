@@ -29,7 +29,6 @@
 
   This example uses a local SQLite database to store data."
   (:require [com.stuartsierra.component :as component]
-            [compojure.coercions :refer [as-int]]
             [compojure.core :refer [GET POST let-routes]]
             [compojure.route :as route]
             ;; we use Jetty by default but if you want to use
