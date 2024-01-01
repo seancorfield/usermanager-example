@@ -1,6 +1,7 @@
 /.calva/output-window
 /.cpcache
 /.clj-kondo/.cache
+/.clj-kondo/.lock
 /.lsp
 /.nrepl-port
 /.portal
