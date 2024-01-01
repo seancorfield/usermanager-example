@@ -39,7 +39,7 @@
   [req]
   (swap! changes inc)
   (model/delete-user-by-id (-> req :application/component :database)
-                           (get-in req [:params :id]))
+                           (-> req (get-in [:params :id]) (parse-uuid)))
   (resp/redirect "/user/list"))
 
 (defn edit
@@ -50,7 +50,7 @@
   [req]
   (let [db   (-> req :application/component :database)
         user (when-let [id (not-empty (get-in req [:params :id]))]
-               (model/get-user-by-id db id))]
+               (model/get-user-by-id db (parse-uuid id)))]
     (-> req
         (update :params assoc
                 :user user
@@ -76,7 +76,8 @@
       (rename-keys {:id :xt$id}) ; rename form field to match model
       ;; get just the fields we care about:
       (select-keys [:xt$id :first_name :last_name :email :department_id])
-      ;; convert form fields to numeric:)
+      ;; convert form fields to uuid/numeric:
+      (update :xt$id         #(some-> % not-empty parse-uuid))
       (update :department_id #(some-> % not-empty Long/parseLong))
       (->> (model/save-user (-> req :application/component :database))))
   (resp/redirect "/user/list"))

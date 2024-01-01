@@ -34,7 +34,7 @@
       (doseq [[ix d] (map-indexed vector departments)]
         (sql/insert! (db) :department {:name d :xt$id (inc ix)}))
       (doseq [a initial-user-data]
-        (sql/insert! (db) :addressbook (assoc a :xt$id (str (random-uuid)))))
+        (sql/insert! (db) :addressbook (assoc a :xt$id (random-uuid))))
       (println "Populated database with initial data!")
       (catch Exception e
         (println "Exception:" (ex-message e))
@@ -100,11 +100,11 @@
   [db user]
   (let [id   (:xt$id user)
         user (dissoc user :xt$id)]
-    (if (seq id)
+    (if (and id (uuid? id))
       ;; update
       (sql/update! (db) :addressbook user {:addressbook.xt$id id})
       ;; insert
-      (sql/insert! (db) :addressbook (assoc user :xt$id (str (random-uuid)))))))
+      (sql/insert! (db) :addressbook (assoc user :xt$id (random-uuid))))))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."
