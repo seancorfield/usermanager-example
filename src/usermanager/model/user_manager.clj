@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2023 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2024 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager
   "The model for the application. This is where the persistence happens,
@@ -77,7 +77,7 @@
 (defn get-departments
   "Return all available department records (in order)."
   [db]
-  (sort-by :name (sql/query (db) ["select d.* from department d"])))
+  (sql/query (db) ["select d.* from department d order by d.name"]))
 
 (defn get-user-by-id
   "Given a user ID, return the user record."
@@ -87,12 +87,13 @@
 (defn get-users
   "Return all available users, sorted by name."
   [db]
-  (sort-by (juxt :last_name :first_name)
-           (sql/query (db)
-                      ["select a.*, d.name
+  (sql/query (db)
+             ["
+select a.*, d.name
  from addressbook a
  join department d on a.department_id = d.xt$id
-"])))
+ order by a.last_name, a.first_name
+"]))
 
 (defn save-user
   "Save a user record. If ID is present and not empty, then
