@@ -5,7 +5,7 @@
         com.github.seancorfield/next.jdbc
         {:mvn/version "1.3.909"}
         io.github.seancorfield/next.jdbc.xt
-        {:git/sha "a13d129a906253b05d343893083fb6af2107c7dd"}
+        {:git/sha "43c73029c5aa988edd8da373ae3e07e8f5c2816c"}
         com.stuartsierra/component {:mvn/version "1.1.0"}
 
         compojure/compojure {:mvn/version "1.7.1"}
