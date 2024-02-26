@@ -12,10 +12,11 @@ Clojure 1.10 (or later) is required. It uses [XTDB 2](https://xtdb.com) (early a
 
 You'll need [Docker](https://docker.com) installed in order to run an instance of XTDB locally. If you have a remote XTDB instance available, you can edit the `setup-database`function in `src/usermanager/model/user-manager.clj` to point to that instead.
 
-**Requires: XTDB as of 1/5/2024 or later!**
+**Requires: XTDB as of 2/26/2024 or later!**
 
 The code depends on `SELECT * FROM .. ORDER BY ..` which did not work correctly
-prior to that date.
+prior to that date. In addition, the group/artifact coordinates for the XTDB
+client library have changed.
 
 ## Usage
 
