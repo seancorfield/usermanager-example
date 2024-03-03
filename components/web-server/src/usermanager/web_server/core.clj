@@ -2,9 +2,9 @@
   (:require [com.stuartsierra.component :as component]
             [ring.adapter.jetty :refer [run-jetty]]))
 
-;; Standard web server component -- knows how to stop and start your chosen
-;; web server... uses Jetty but explains how to use http-kit instead:
-;; lifecycle for the specified web server in which we run
+;; Standard web server component -- knows how to stop and start the
+;; web server (with the application component as a dependency, and
+;; the handler function as a parameter):
 (defrecord WebServer [handler-fn server port ; parameters
                       application            ; dependencies
                       http-server shutdown]  ; state
@@ -19,11 +19,7 @@
            (assoc this
                   ;; start a Jetty web server -- use :join? false
                   ;; so that it does not block (we use a promise
-                  ;; to block on in -main).
-                  ;; to start an http-kit web server instead:
-                  ;; 1. call run-server instead of run-jetty
-                  ;; 2. omit :join? false since http-kit does
-                  ;; not block when it starts
+                  ;; to block on in -main):
                   :http-server (run-jetty (handler-fn application)
                                           {:port port :join? false})
                   ;; this promise exists primarily so -main can
@@ -35,8 +31,6 @@
            (do
              ;; shutdown Jetty: call .stop on the server object:
              (.stop http-server)
-             ;; shutdown http-kit: invoke the server (as a function):
-             ;; (http-server)
              ;; deliver the promise to indicate shutdown (this is
              ;; really just good housekeeping, since you're only
              ;; going to call stop via the REPL when you are not
