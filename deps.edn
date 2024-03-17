@@ -1,22 +1,6 @@
 {:deps {org.clojure/clojure {:mvn/version "1.11.2"}}
  :aliases  {:dev {:extra-paths ["development/src"
-                                "development/resources"
-                                "bases/web/src"
-                                "bases/web/resources"
-                                "components/app-state/src"
-                                "components/app-state/resources"
-                                "components/database/src"
-                                "components/database/resources"
-                                "components/department/src"
-                                "components/department/resources"
-                                "components/schema/src"
-                                "components/schema/resources"
-                                "components/schema-fixture/src"
-                                "components/schema-fixture/resources"
-                                "components/user/src"
-                                "components/user/resources"
-                                "components/web-server/src"
-                                "components/web-server/resources"]
+                                "development/resources"]
                   :extra-deps {poly-usermanager/web {:local/root "bases/web"}
                                poly-usermanager/app-state {:local/root "components/app-state"}
                                poly-usermanager/database {:local/root "components/database"}
@@ -29,7 +13,9 @@
                                org.xerial/sqlite-jdbc {:mvn/version "3.45.2.0"}}}
 
             :test {:extra-paths ["development/test"
+
                                  "bases/web/test"
+
                                  "components/app-state/test"
                                  "components/database/test"
                                  "components/department/test"
