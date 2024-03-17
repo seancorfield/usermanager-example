@@ -1,4 +1,5 @@
-{:aliases  {:dev {:extra-paths ["development/src"
+{:deps {org.clojure/clojure {:mvn/version "1.11.2"}}
+ :aliases  {:dev {:extra-paths ["development/src"
                                 "development/resources"
                                 "bases/web/src"
                                 "bases/web/resources"
@@ -16,18 +17,16 @@
                                 "components/user/resources"
                                 "components/web-server/src"
                                 "components/web-server/resources"]
-                  :extra-deps {org.clojure/clojure {:mvn/version "1.11.2"}
+                  :extra-deps {poly-usermanager/web {:local/root "bases/web"}
+                               poly-usermanager/app-state {:local/root "components/app-state"}
+                               poly-usermanager/database {:local/root "components/database"}
+                               poly-usermanager/department {:local/root "components/department"}
 
-                               com.github.seancorfield/next.jdbc {:mvn/version "1.3.909"}
-                               com.stuartsierra/component {:mvn/version "1.1.0"}
+                               poly-usermanager/schema {:local/root "components/schema"}
+                               poly-usermanager/user {:local/root "components/user"}
+                               poly-usermanager/web-server {:local/root "components/web-server"}
 
-                               compojure/compojure {:mvn/version "1.7.1"}
-                               ring/ring {:mvn/version "1.11.0"}
-                               ring/ring-defaults {:mvn/version "0.4.0"}
-
-                               org.xerial/sqlite-jdbc {:mvn/version "3.45.1.0"}
-
-                               selmer/selmer {:mvn/version "1.12.59"}}}
+                               org.xerial/sqlite-jdbc {:mvn/version "3.45.2.0"}}}
 
             :test {:extra-paths ["development/test"
                                  "bases/web/test"
@@ -37,9 +36,9 @@
                                  "components/schema/test"
                                  "components/schema-fixture/test"
                                  "components/user/test"
-                                 "components/web-server/test"
-                                 "projects/usermanager/test"]
-                   :extra-deps {com.h2database/h2 {:mvn/version "2.2.224"}
+                                 "components/web-server/test"]
+                   :extra-deps {poly-usermanager/schema-fixture {:local/root "components/schema-fixture"}
+                                com.h2database/h2 {:mvn/version "2.2.224"}
                                 org.clojure/test.check {:mvn/version "1.1.1"}}}
 
             :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]

@@ -8,14 +8,13 @@
         poly/user       {:local/root "../../components/user"}
         poly/web-server {:local/root "../../components/web-server"}
 
-        org.clojure/clojure {:mvn/version "1.11.1"}
+        org.clojure/clojure {:mvn/version "1.11.2"}
         ;; specify DB driver for "production" usage:
-        org.xerial/sqlite-jdbc {:mvn/version "3.44.1.0"}}
+        org.xerial/sqlite-jdbc {:mvn/version "3.45.2.0"}}
 
  :aliases {:test {:extra-paths ["test"]
                   :extra-deps {poly/schema-fixture {:local/root "../../components/schema-fixture"}
                                org.clojure/test.check {:mvn/version "1.1.1"}}}
 
-           :build {:replace-deps {io.github.clojure/tools.build
-                                  {:git/tag "v0.9.2" :git/sha "fe6b140"}}
+           :build {:replace-deps {io.github.clojure/tools.build {:mvn/version "0.10.0"}}
                    :ns-default build}}}
