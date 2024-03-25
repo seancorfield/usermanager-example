@@ -1,8 +1,9 @@
-.cpcache
-.calva/output-window
-.DS_Store
-.nrepl-port
 *.jar
+.DS_Store
+.calva/output-window
+.calva/repl.calva-repl
+.cpcache
+.nrepl-port
 /.clj-kondo/.cache
 /.lsp/.cache
 /.portal/vs-code.edn
