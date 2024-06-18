@@ -41,7 +41,7 @@ Clojure 1.10 (or later) is required. The "model" of this example app uses namesp
 
 ## Usage
 
-Clone the repo, `cd` into it, then see below to run the application (from the command-line or in a REPL), run the tests, build an uberjar, and run the uberjar.
+Clone the repo, `cd` into it, **change to the polylith branch** `git checkout polylith` and then see below to run the application (from the command-line or in a REPL), run the tests, build an uberjar, and run the uberjar.
 
 ### Run the Application
 
