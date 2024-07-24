@@ -49,10 +49,10 @@
   (start [this]
     (if datasource
       this ; already initialized
-      (let [database (assoc this :datasource (jdbc/get-datasource db-spec))]
+      (let [this+ds (assoc this :datasource (jdbc/get-datasource db-spec))]
         ;; set up database if necessary
-        (populate database)
-        database)))
+        (populate this+ds)
+        this+ds)))
   (stop [this]
     (if datasource
       (do
