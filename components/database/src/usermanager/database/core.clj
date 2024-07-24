@@ -10,10 +10,10 @@
   (start [this]
     (if datasource
       this ; already initialized
-      (let [database (assoc this :datasource (jdbc/get-datasource db-spec))]
+      (let [this+ds (assoc this :datasource (jdbc/get-datasource db-spec))]
         ;; set up database if necessary
-        (init-fn database (:dbtype db-spec))
-        database)))
+        (init-fn this+ds (:dbtype db-spec))
+        this+ds)))
   (stop [this]
     (assoc this :datasource nil))
 
