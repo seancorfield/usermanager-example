@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2023 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2024 Sean Corfield, all rights reserved
 
 (ns usermanager.controllers.user
   "The main controller for the user management portion of this app."
@@ -67,17 +67,17 @@
 
 (defn save
   "This works for saving new users as well as updating existing users, by
-   delegating to the model, and either passing nil for :xt$id or the value
+   delegating to the model, and either passing nil for :_id or the value
    that was passed to the edit form."
   [req]
   (swap! changes inc)
   (-> req
       :params
-      (rename-keys {:id :xt$id}) ; rename form field to match model
+      (rename-keys {:id :_id}) ; rename form field to match model
       ;; get just the fields we care about:
-      (select-keys [:xt$id :first_name :last_name :email :department_id])
+      (select-keys [:_id :first_name :last_name :email :department_id])
       ;; convert form fields to uuid/numeric:
-      (update :xt$id         #(some-> % not-empty parse-uuid))
+      (update :_id           #(some-> % not-empty parse-uuid))
       (update :department_id #(some-> % not-empty Long/parseLong))
       (->> (model/save-user (-> req :application/component :database))))
   (resp/redirect "/user/list"))

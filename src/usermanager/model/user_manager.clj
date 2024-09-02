@@ -7,10 +7,9 @@
   (:require [com.stuartsierra.component :as component]
             [next.jdbc :as jdbc]
             [next.jdbc.sql :as sql]
-            [next.jdbc.xt] ; activate XTDB support
             [xtdb.client :as xtc]))
 
-;; our initial data -- xt$id is added on insertion:
+;; our initial data -- _id is added on insertion:
 
 (def ^:private departments
   "List of departments."
@@ -32,9 +31,11 @@
                    (catch Exception _)))
     (try
       (doseq [[ix d] (map-indexed vector departments)]
-        (sql/insert! (db) :department {:name d :xt$id (inc ix)}))
+        (sql/insert! (db) :department {:name d :_id (inc ix)}
+                     {:return-keys false}))
       (doseq [a initial-user-data]
-        (sql/insert! (db) :addressbook (assoc a :xt$id (random-uuid))))
+        (sql/insert! (db) :addressbook (assoc a :_id (random-uuid))
+                     {:return-keys false}))
       (println "Populated database with initial data!")
       (catch Exception e
         (println "Exception:" (ex-message e))
@@ -55,9 +56,7 @@
         this+ds)))
   (stop [this]
     (if datasource
-      (do
-        (.close datasource)
-        (assoc this :datasource nil))
+      (assoc this :datasource nil)
       this))
 
   ;; allow the Database component to be "called" with no arguments
@@ -65,14 +64,17 @@
   clojure.lang.IFn
   (invoke [_] datasource))
 
-(defn setup-database [] (map->Database {:db-spec (xtc/start-client "http://localhost:3000")}))
+(defn setup-database []
+  (map->Database {:db-spec {:dbtype "postgresql"
+                            :host "localhost"
+                            :port 5432}}))
 
 ;; data model access functions
 
 (defn get-department-by-id
   "Given a department ID, return the department record."
   [db id]
-  (sql/get-by-id (db) :department id :department.xt$id {}))
+  (sql/get-by-id (db) :department id :department._id {}))
 
 (defn get-departments
   "Return all available department records (in order)."
@@ -82,7 +84,7 @@
 (defn get-user-by-id
   "Given a user ID, return the user record."
   [db id]
-  (sql/get-by-id (db) :addressbook id :addressbook.xt$id {}))
+  (sql/get-by-id (db) :addressbook id :addressbook._id {}))
 
 (defn get-users
   "Return all available users, sorted by name."
@@ -91,7 +93,7 @@
              ["
 select a.*, d.name
  from addressbook a
- join department d on a.department_id = d.xt$id
+ join department d on a.department_id = d._id
  order by a.last_name, a.first_name
 "]))
 
@@ -99,15 +101,18 @@ select a.*, d.name
   "Save a user record. If ID is present and not empty, then
   this is an update operation, otherwise it's an insert."
   [db user]
-  (let [id   (:xt$id user)
-        user (dissoc user :xt$id)]
+  (let [id   (:_id user)
+        user (dissoc user :_id)]
     (if (and id (uuid? id))
       ;; update
-      (sql/update! (db) :addressbook user {:addressbook.xt$id id})
+      (sql/update! (db) :addressbook user {:addressbook._id id})
       ;; insert
-      (sql/insert! (db) :addressbook (assoc user :xt$id (random-uuid))))))
+      (let [id (random-uuid)]
+        (sql/insert! (db) :addressbook (assoc user :_id id)
+                     {:return-keys false})
+        {:_id id}))))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."
   [db id]
-  (sql/delete! (db) :addressbook {:addressbook.xt$id id}))
+  (sql/delete! (db) :addressbook {:addressbook._id id}))

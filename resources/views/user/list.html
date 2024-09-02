@@ -14,12 +14,12 @@
             {% for user in users %}
             <tr>
 			        <td class="name">
-                        <a href="/user/form/{{user.xt$id}}">{{user.last_name}},
+                        <a href="/user/form/{{user._id}}">{{user.last_name}},
                           {{user.first_name}}</a>
                     </td>
 			        <td class="email">{{user.email}}</td>
 			        <td class="department">{{user.name}}</td>
-			        <td class="delete"><a href="/user/delete/{{user.xt$id}}">DELETE</a></td>
+			        <td class="delete"><a href="/user/delete/{{user._id}}">DELETE</a></td>
 		        </tr>
             {% endfor %}
         {% endif %}

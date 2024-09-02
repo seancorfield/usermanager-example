@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2023 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2024 Sean Corfield, all rights reserved
 
 (ns usermanager.main
   "This is an example web application, using just a few basic Clojure
@@ -227,7 +227,7 @@
   usermanager.main=> (def db (-> repl-system deref :application :database))
   #'usermanager.main/db
   usermanager.main=> (jdbc/execute! (db) [\"select * from addressbook\"])
-  [{:xt$id \"..\", :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
+  [{:_id \"..\", :first_name \"Sean\", :last_name \"Corfield\", :email \"sean@worldsingles.com\", :department_id 4}]
   usermanager.main=>"}
   repl-system
   (atom nil))

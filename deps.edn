@@ -1,18 +1,16 @@
 {:mvn/repos {"ossrh-snapshots" {:url "https://s01.oss.sonatype.org/content/repositories/snapshots"}}
  :paths ["resources" "src"]
- :deps {org.clojure/clojure {:mvn/version "1.11.2"}
+ :deps {org.clojure/clojure {:mvn/version "1.12.0-rc2"}
 
-        com.github.seancorfield/next.jdbc
-        {:mvn/version "1.3.909"}
-        io.github.seancorfield/next.jdbc.xt
-        {:git/sha "75566889cc6b577bec2d9ac8e3b305a8aba75623"}
+        com.github.seancorfield/next.jdbc {:mvn/version "1.3.939"}
+        org.postgresql/postgresql {:mvn/version "42.7.4"}
         com.stuartsierra/component {:mvn/version "1.1.0"}
 
         compojure/compojure {:mvn/version "1.7.1"}
-        ring/ring {:mvn/version "1.11.0"}
-        ring/ring-defaults {:mvn/version "0.4.0"}
+        ring/ring {:mvn/version "1.12.2"}
+        ring/ring-defaults {:mvn/version "0.5.0"}
 
-        selmer/selmer {:mvn/version "1.12.59"}
+        selmer/selmer {:mvn/version "1.12.61"}
 
         com.xtdb/xtdb-api {:mvn/version "2.0.0-SNAPSHOT"}
         com.xtdb/xtdb-http-client-jvm {:mvn/version "2.0.0-SNAPSHOT"}}
@@ -25,5 +23,5 @@
          ;; in-process: needed on JDK17+
          :jvm-opts ["--add-opens=java.base/java.nio=ALL-UNNAMED"
                     "-Dio.netty.tryReflectionSetAccessible=true"]}
-  :build {:replace-deps {io.github.clojure/tools.build {:mvn/version "0.9.6"}}
+  :build {:replace-deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}}
           :ns-default build}}}

@@ -2,7 +2,7 @@
 <form class="familiar medium" method="post" action="/user/save">
 
 	<input type="hidden" name="id" id="id"
-				 value="{{user.xt$id}}"/>
+				 value="{{user._id}}"/>
 
 	<div class="field">
 		<label for="first_name" class="label">First Name:</label>
@@ -27,8 +27,8 @@
 		<select name="department_id" id="department_id">{%
             for d in departments
             %}
-            <option value="{{d.xt$id}}"{%
-                    ifequal user.department_id d.xt$id
+            <option value="{{d._id}}"{%
+                    ifequal user.department_id d._id
                     %} selected="selected"{%
                     endifequal %}>{{d.name}}</option>{%
             endfor

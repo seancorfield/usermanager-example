@@ -8,15 +8,11 @@ Clojure beginners often ask for a "complete" web application example that they c
 
 This example assumes that you have a recent version of the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed (at least 1.10.3.933), and provides a `deps.edn` file, and a `build.clj` file.
 
-Clojure 1.10 (or later) is required. It uses [XTDB 2](https://xtdb.com) (early access) via [next.jdbc](https://cljdoc.org/d/seancorfield/next.jdbc) and [next.jdbc.xt](https://github.com/seancorfield/next.jdbc.xt).
+Clojure 1.12.0-rc2 (or later) is required. It uses [XTDB 2](https://xtdb.com) (early access) via [next.jdbc](https://cljdoc.org/d/seancorfield/next.jdbc).
 
 You'll need [Docker](https://docker.com) installed in order to run an instance of XTDB locally. If you have a remote XTDB instance available, you can edit the `setup-database`function in `src/usermanager/model/user-manager.clj` to point to that instead.
 
-**Requires: XTDB as of 2/26/2024 or later!**
-
-The code depends on `SELECT * FROM .. ORDER BY ..` which did not work correctly
-prior to that date. In addition, the group/artifact coordinates for the XTDB
-client library have changed.
+**Requires: XTDB as of 9/2/2024 or later!**
 
 ## Usage
 
@@ -34,8 +30,10 @@ docker pull ghcr.io/xtdb/xtdb-standalone-ea
 Then use Docker to run XTDB locally (this will keep this terminal window busy, so open a new terminal window to run the application):
 
 ```
-docker run -tip 3000:3000 ghcr.io/xtdb/xtdb-standalone-ea
+docker run -tip 5432:5432 ghcr.io/xtdb/xtdb-standalone-ea
 ```
+
+Port 5432 is the pgwire server that XTDB runs.
 
 In a separate terminal:
 
