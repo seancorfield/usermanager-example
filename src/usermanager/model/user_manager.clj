@@ -6,8 +6,7 @@
   business logic and the persistence would be in a separate namespace."
   (:require [com.stuartsierra.component :as component]
             [next.jdbc :as jdbc]
-            [next.jdbc.sql :as sql]
-            [xtdb.client :as xtc]))
+            [next.jdbc.sql :as sql]))
 
 ;; our initial data -- _id is added on insertion:
 
@@ -31,11 +30,9 @@
                    (catch Exception _)))
     (try
       (doseq [[ix d] (map-indexed vector departments)]
-        (sql/insert! (db) :department {:name d :_id (inc ix)}
-                     {:return-keys false}))
+        (sql/insert! (db) :department {:name d :_id (inc ix)} {:return-keys false}))
       (doseq [a initial-user-data]
-        (sql/insert! (db) :addressbook (assoc a :_id (random-uuid))
-                     {:return-keys false}))
+        (sql/insert! (db) :addressbook (assoc a :_id (random-uuid)) {:return-keys false}))
       (println "Populated database with initial data!")
       (catch Exception e
         (println "Exception:" (ex-message e))
@@ -65,9 +62,7 @@
   (invoke [_] datasource))
 
 (defn setup-database []
-  (map->Database {:db-spec {:dbtype "postgresql"
-                            :host "localhost"
-                            :port 5432}}))
+  (map->Database {:db-spec {:dbtype "postgresql" :host "localhost" :port 5432}}))
 
 ;; data model access functions
 
@@ -84,7 +79,7 @@
 (defn get-user-by-id
   "Given a user ID, return the user record."
   [db id]
-  (sql/get-by-id (db) :addressbook id :addressbook._id {}))
+  (sql/get-by-id (db) :addressbook id :_id {}))
 
 (defn get-users
   "Return all available users, sorted by name."
@@ -105,14 +100,12 @@ select a.*, d.name
         user (dissoc user :_id)]
     (if (and id (uuid? id))
       ;; update
-      (sql/update! (db) :addressbook user {:addressbook._id id})
+      (sql/update! (db) :addressbook user {:_id id})
       ;; insert
-      (let [id (random-uuid)]
-        (sql/insert! (db) :addressbook (assoc user :_id id)
-                     {:return-keys false})
-        {:_id id}))))
+      (sql/insert! (db) :addressbook (assoc user :_id (random-uuid))
+                   {:return-keys false}))))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."
   [db id]
-  (sql/delete! (db) :addressbook {:addressbook._id id}))
+  (sql/delete! (db) :addressbook {:_id id}))
