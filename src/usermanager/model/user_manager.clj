@@ -69,7 +69,7 @@
 (defn get-department-by-id
   "Given a department ID, return the department record."
   [db id]
-  (sql/get-by-id (db) :department id :department._id {}))
+  (sql/get-by-id (db) :department id :_id {}))
 
 (defn get-departments
   "Return all available department records (in order)."
