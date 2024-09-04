@@ -10,6 +10,8 @@ A version of this application that uses the [Polylith architecture](https://poly
 
 A version of this application that uses the [XTDB 2 database](https://xtdb.com/) instead of SQLite/H2 is also available, on the [`xtdb` branch](https://github.com/seancorfield/usermanager-example/tree/xtdb).
 
+Aditya Athalye has created a stripped version, using core functions and helper functions instead of several libraries that this version uses: [usermanager-example from first principles](https://github.com/adityaathalye/usermanager-first-principles). Comparing that version and this version is a good exercise in understanding the basic machinery that a web app needs, and what those libraries are doing for you.
+
 ## Quickstart via Devcontainers or Github Codespaces
 If you have configured your Github account, you can start the project without any other setup.  It will open a web-based vscode editor backed by a Github Codespace VM. (Codespaces is Github's hosted Devcontainer solution)
 
