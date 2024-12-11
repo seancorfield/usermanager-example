@@ -14,9 +14,10 @@
 (defn- with-test-db
   "A test fixture that sets up an in-process XTDB node for running tests."
   [t]
-  (with-open [_ (xtn/start-node {:pgwire-server {:port test-pg-port}})]
+  (with-open [_ (xtn/start-node {:server {:port test-pg-port}})]
     (let [db (component/start
               (model/map->Database {:db-spec {:dbtype "postgresql"
+                                              :dbname "xtdb"
                                               :host "localhost"
                                               :port test-pg-port}}))]
       (reset! test-db db)
