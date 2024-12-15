@@ -10,9 +10,10 @@ A version of this application that uses the [Polylith architecture](https://poly
 
 A version of this application that uses the [XTDB 2 database](https://xtdb.com/) instead of SQLite/H2 is also available, on the [`xtdb` branch](https://github.com/seancorfield/usermanager-example/tree/xtdb).
 
-Aditya Athalye has created a stripped version, using core functions and helper functions instead of several libraries that this version uses: [usermanager-example from first principles](https://github.com/adityaathalye/usermanager-first-principles). Comparing that version and this version is a good exercise in understanding the basic machinery that a web app needs, and what those libraries are doing for you.
+Aditya Athalye has created a stripped down version, using core functions and helper functions instead of several libraries that this version uses: [usermanager-example from first principles](https://github.com/adityaathalye/usermanager-first-principles). Comparing that version and this version is a good exercise in understanding the basic machinery that a web app needs, and what those libraries are doing for you.
 
 ## Quickstart via Devcontainers or Github Codespaces
+
 If you have configured your Github account, you can start the project without any other setup.  It will open a web-based vscode editor backed by a Github Codespace VM. (Codespaces is Github's hosted Devcontainer solution)
 
 [![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/seancorfield/usermanager-example)
@@ -134,6 +135,6 @@ This JAR file can be deployed to any server that have Java installed and run wit
 
 # License & Copyright
 
-Copyright (c) 2015-2023 Sean Corfield.
+Copyright (c) 2015-2024 Sean Corfield.
 
 Distributed under the Apache Source License 2.0.
