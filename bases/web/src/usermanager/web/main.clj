@@ -134,6 +134,9 @@
 (comment
   (def system (new-system 8888))
   (alter-var-root #'system component/start)
+  (def db (-> system :application :database))
+  (require '[next.jdbc :as jdbc])
+  (jdbc/execute! (db) ["select * from addressbook"])
   (alter-var-root #'system component/stop)
   )
 
