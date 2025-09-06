@@ -62,7 +62,7 @@
   (invoke [_] datasource))
 
 (defn setup-database []
-  (map->Database {:db-spec {:dbtype "postgresql" :dbname "xtdb" :host "localhost" :port 5432}}))
+  (map->Database {:db-spec {:dbtype "xtdb" :dbname "xtdb" :host "localhost" :port 5432}}))
 
 ;; data model access functions
 

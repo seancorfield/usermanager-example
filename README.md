@@ -8,7 +8,7 @@ Clojure beginners often ask for a "complete" web application example that they c
 
 This example assumes that you have a recent version of the [Clojure CLI](https://clojure.org/guides/deps_and_cli) installed (at least 1.10.3.933), and provides a `deps.edn` file, and a `build.clj` file.
 
-Clojure 1.12.0-rc2 (or later) is required. It uses [XTDB 2](https://xtdb.com) (early access) via [next.jdbc](https://cljdoc.org/d/seancorfield/next.jdbc).
+Clojure 1.12.0-rc2 (or later) is required. It uses [XTDB 2](https://xtdb.com) via [next.jdbc](https://cljdoc.org/d/seancorfield/next.jdbc).
 
 You'll need [Docker](https://docker.com) installed in order to run an instance of XTDB locally. If you have a remote XTDB instance available, you can edit the `setup-database`function in `src/usermanager/model/user-manager.clj` to point to that instead.
 
@@ -24,13 +24,13 @@ or _Run the tests_ or _Build an Uberjar_.
 Use Docker to get a local copy of the most recent XTDB 2 early access release:
 
 ```
-docker pull ghcr.io/xtdb/xtdb-standalone-ea
+docker pull ghcr.io/xtdb/xtdb
 ```
 
 Then use Docker to run XTDB locally (this will keep this terminal window busy, so open a new terminal window to run the application):
 
 ```
-docker run -tip 5432:5432 ghcr.io/xtdb/xtdb-standalone-ea
+docker run -tip 5432:5432 ghcr.io/xtdb/xtdb
 ```
 
 Port 5432 is the pgwire server that XTDB runs.

@@ -16,7 +16,7 @@
   [t]
   (with-open [_ (xtn/start-node {:server {:port test-pg-port}})]
     (let [db (component/start
-              (model/map->Database {:db-spec {:dbtype "postgresql"
+              (model/map->Database {:db-spec {:dbtype "xtdb"
                                               :dbname "xtdb"
                                               :host "localhost"
                                               :port test-pg-port}}))]
