@@ -1,4 +1,4 @@
-{:deps {org.clojure/clojure {:mvn/version "1.11.2"}}
+{:deps {org.clojure/clojure {:mvn/version "1.12.2"}}
  :aliases  {:dev {:extra-paths ["development/src"
                                 "development/resources"]
                   :extra-deps {poly-usermanager/web {:local/root "bases/web"}
@@ -10,7 +10,7 @@
                                poly-usermanager/user {:local/root "components/user"}
                                poly-usermanager/web-server {:local/root "components/web-server"}
 
-                               org.xerial/sqlite-jdbc {:mvn/version "3.45.2.0"}}}
+                               org.xerial/sqlite-jdbc {:mvn/version "3.50.3.0"}}}
 
             :test {:extra-paths ["development/test"
 
@@ -24,8 +24,8 @@
                                  "components/user/test"
                                  "components/web-server/test"]
                    :extra-deps {poly-usermanager/schema-fixture {:local/root "components/schema-fixture"}
-                                com.h2database/h2 {:mvn/version "2.2.224"}
+                                com.h2database/h2 {:mvn/version "2.3.232"}
                                 org.clojure/test.check {:mvn/version "1.1.1"}}}
 
             :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
-                   :extra-deps {polylith/clj-poly {:mvn/version "0.2.19"}}}}}
+                   :extra-deps {polylith/clj-poly {:mvn/version "0.2.22"}}}}}
