@@ -1,8 +1,9 @@
+.calva/mcp-server/port
 /.calva/output-window
 /.calva/repl.calva-repl
-/.cpcache
 /.clj-kondo/.cache
 /.clj-kondo/.lock
+/.cpcache
 /.lsp
 /.nrepl-port
 /.portal
