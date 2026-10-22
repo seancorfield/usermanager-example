@@ -1,5 +1,5 @@
 {:paths ["resources" "src"]
- :deps {org.clojure/clojure {:mvn/version "1.13.0-alpha9"}
+ :deps {org.clojure/clojure {:mvn/version "1.13.0-alpha10"}
 
         com.github.seancorfield/next.jdbc {:mvn/version "1.4.70"}
         com.stuartsierra/component {:mvn/version "1.2.0"}

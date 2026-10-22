@@ -48,13 +48,13 @@
   If the :id parameter is present, Compojure will have coerced it to an
   int and we can use it to populate the edit form by loading that user's
   data from the addressbook."
-  [{{:keys! [database]} :application/component
+  [{{:req! {db :database}} :application/component
     {:keys [id]} :params
     :as req}]
   (-> req
       (update :params assoc
-              :user (when id (model/get-user-by-id database id))
-              :departments (model/get-departments database))
+              :user (when id (model/get-user-by-id db id))
+              :departments (model/get-departments db))
       (assoc :application/view "form")))
 
 (defn get-users
