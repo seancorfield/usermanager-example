@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2024 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2026 Sean Corfield, all rights reserved
 
 (ns usermanager.model.user-manager
   "The model for the application. This is where the persistence happens,
@@ -124,18 +124,15 @@ select a.*, d.name
 "]))
 
 (defn save-user
-  "Save a user record. If ID is present and not zero, then
+  "Save a user record. If ID is present, not nil, and not zero, then
   this is an update operation, otherwise it's an insert."
   [db user]
-  (let [id (:addressbook/id user)]
+  (let [{:addressbook/keys [id] :excess user-without-id} user]
     (if (and id (not (zero? id)))
       ;; update
-      (sql/update! (db) :addressbook
-                   (dissoc user :addressbook/id)
-                   {:id id})
+      (sql/update! (db) :addressbook user-without-id {:id id})
       ;; insert
-      (sql/insert! (db) :addressbook
-                   (dissoc user :addressbook/id)))))
+      (sql/insert! (db) :addressbook user-without-id))))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."

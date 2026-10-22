@@ -1,4 +1,4 @@
-;; copyright (c) 2019-2024 Sean Corfield, all rights reserved
+;; copyright (c) 2019-2026 Sean Corfield, all rights reserved
 
 (ns usermanager.controllers.user
   "The main controller for the user management portion of this app."
@@ -68,20 +68,19 @@
 
 (defn save
   "This works for saving new users as well as updating existing users, by
-  delegatin to the model, and either passing nil for :addressbook/id or
+  delegating to the model, and either passing nil for :addressbook/id or
   the numeric value that was passed to the edit form."
   [req]
   (swap! changes inc)
-  (-> req
-      :params
-      ;; get just the form fields we care about:
-      (select-keys [:id :first_name :last_name :email :department_id])
-      ;; convert form fields to numeric:
-      (update :id            #(some-> % not-empty Long/parseLong))
-      (update :department_id #(some-> % not-empty Long/parseLong))
-      ;; qualify their names for domain model:
-      (->> (reduce-kv (fn [m k v] (assoc! m (keyword "addressbook" (name k)) v))
-                      (transient {}))
-           (persistent!)
-           (model/save-user (-> req :application/component :database))))
+  ;; get just the form fields we care about (and require them to be present):
+  (let [{:keys! [& :id :first_name :last_name :email :department_id]
+         :select user}
+        (:params req)]
+    (-> user
+        ;; convert form fields to numeric (or nil, for :id):
+        (update :id            #(some-> % not-empty Long/parseLong))
+        (update :department_id #(some-> % not-empty Long/parseLong))
+        ;; qualify their names for the domain model:
+        (update-keys #(keyword "addressbook" (name %)))
+        (->> (model/save-user (-> req :application/component :database)))))
   (resp/redirect "/user/list"))
