@@ -126,13 +126,12 @@ select a.*, d.name
 (defn save-user
   "Save a user record. If ID is present, not nil, and not zero, then
   this is an update operation, otherwise it's an insert."
-  [db user]
-  (let [{:addressbook/keys [id] :excess user-without-id} user]
-    (if (and id (not (zero? id)))
-      ;; update
-      (sql/update! (db) :addressbook user-without-id {:id id})
-      ;; insert
-      (sql/insert! (db) :addressbook user-without-id))))
+  [db {:addressbook/keys [id] :excess user-without-id}]
+  (if (and id (not (zero? id)))
+    ;; update
+    (sql/update! (db) :addressbook user-without-id {:id id})
+    ;; insert
+    (sql/insert! (db) :addressbook user-without-id)))
 
 (defn delete-user-by-id
   "Given a user ID, delete that user."

@@ -15,9 +15,9 @@
   data to indicate which view file they want displayed. This allows
   us to put the rendering logic in one place instead of repeating it
   for every handler."
-  [req]
-  (let [data (assoc (:params req) :changes @changes)
-        view (:application/view req "default")
+  [{:keys! [params]
+    :application/keys [view] :or {view "default"}}]
+  (let [data (assoc params :changes @changes)
         html (tmpl/render-file (str "views/user/" view ".html") data)]
     (-> (resp/response (tmpl/render-file "layouts/default.html"
                                          (assoc data :body [:safe html])))
@@ -36,10 +36,10 @@
 
 (defn delete-by-id
   "Compojure has already coerced the :id parameter to an int."
-  [req]
+  [{{:keys! [database]} :application/component
+    {:keys! [id]} :params}]
   (swap! changes inc)
-  (model/delete-user-by-id (-> req :application/component :database)
-                           (get-in req [:params :id]))
+  (model/delete-user-by-id database id)
   (resp/redirect "/user/list"))
 
 (defn edit
@@ -48,34 +48,32 @@
   If the :id parameter is present, Compojure will have coerced it to an
   int and we can use it to populate the edit form by loading that user's
   data from the addressbook."
-  [req]
-  (let [db   (-> req :application/component :database)
-        user (when-let [id (get-in req [:params :id])]
-               (model/get-user-by-id db id))]
-    (-> req
-        (update :params assoc
-                :user user
-                :departments (model/get-departments db))
-        (assoc :application/view "form"))))
+  [{{:keys! [database]} :application/component
+    {:keys [id]} :params
+    :as req}]
+  (-> req
+      (update :params assoc
+              :user (when id (model/get-user-by-id database id))
+              :departments (model/get-departments database))
+      (assoc :application/view "form")))
 
 (defn get-users
   "Render the list view with all the users in the addressbook."
-  [req]
-  (let [users (model/get-users (-> req :application/component :database))]
-    (-> req
-        (assoc-in [:params :users] users)
-        (assoc :application/view "list"))))
+  [{{:keys! [database]} :application/component
+    :as req}]
+  (-> req
+      (assoc-in [:params :users] (model/get-users database))
+      (assoc :application/view "list")))
 
 (defn save
   "This works for saving new users as well as updating existing users, by
   delegating to the model, and either passing nil for :addressbook/id or
   the numeric value that was passed to the edit form."
-  ;; from the parameters (:params), require these keys to be present and
-  ;; select a map containing just those keys; from the application component,
-  ;; require & bind the :database key:
-  [{{:keys! [& :id :first_name :last_name :email :department_id]
-     :select user} :params
-    {:keys! [database]} :application/component}]
+  [{{:keys! [database]} :application/component
+    ;; from the parameters (:params), require these keys to be present and
+    ;; select a map containing just those keys:
+    {:keys! [& :id :first_name :last_name :email :department_id]
+     :select user} :params}]
   (swap! changes inc)
   (-> user
       ;; convert form fields to numeric (or nil, for :id):
