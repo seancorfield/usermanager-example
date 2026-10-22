@@ -70,17 +70,18 @@
   "This works for saving new users as well as updating existing users, by
   delegating to the model, and either passing nil for :addressbook/id or
   the numeric value that was passed to the edit form."
-  [req]
+  ;; from the parameters (:params), require these keys to be present and
+  ;; select a map containing just those keys; from the application component,
+  ;; require & bind the :database key:
+  [{{:keys! [& :id :first_name :last_name :email :department_id]
+     :select user} :params
+    {:keys! [database]} :application/component}]
   (swap! changes inc)
-  ;; get just the form fields we care about (and require them to be present):
-  (let [{:keys! [& :id :first_name :last_name :email :department_id]
-         :select user}
-        (:params req)]
-    (-> user
-        ;; convert form fields to numeric (or nil, for :id):
-        (update :id            #(some-> % not-empty Long/parseLong))
-        (update :department_id #(some-> % not-empty Long/parseLong))
-        ;; qualify their names for the domain model:
-        (update-keys #(keyword "addressbook" (name %)))
-        (->> (model/save-user (-> req :application/component :database)))))
+  (-> user
+      ;; convert form fields to numeric (or nil, for :id):
+      (update :id            #(some-> % not-empty Long/parseLong))
+      (update :department_id #(some-> % not-empty Long/parseLong))
+      ;; qualify their names for the domain model:
+      (update-keys #(keyword "addressbook" (name %)))
+      (->> (model/save-user database)))
   (resp/redirect "/user/list"))
